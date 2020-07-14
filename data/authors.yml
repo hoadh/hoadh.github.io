@@ -1,0 +1,5 @@
+- name: "hoad" # if fullName 👇🏻 isn't set, name will be displayed on author card
+  fullName: "Hoa Dang" # optional. If set, it will display on author card
+  photo: "hoad.jpeg"
+  url: "https://www.linkedin.com/in/hoad/"
+  bio: "a simple man who loves reading his mind \"on-the-fly\"."
