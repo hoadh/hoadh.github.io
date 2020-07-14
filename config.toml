@@ -1,0 +1,4 @@
+baseURL = "https://hoad.kafa.io/"
+languageCode = "en-us"
+title = "hoa.d"
+theme = "hugo-swift-theme"
