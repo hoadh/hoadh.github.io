@@ -2,7 +2,6 @@
 title: "Unit Testing trong Angular"
 author: "hoad"
 date: 2020-07-15T03:17:53+07:00
-draft: true
 ---
 
 # Unit Testing trong Angular

@@ -2,7 +2,6 @@
 title: "Thực hành BDD với Cucumber"
 author: "hoad"
 date: 2020-07-15T03:19:07+07:00
-draft: true
 ---
 
 # Thực hành BDD với Cucumber

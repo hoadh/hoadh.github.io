@@ -2,7 +2,6 @@
 title: "Unit Testing - Những bước chân đầu tiên"
 author: "hoad"
 date: 2020-07-15T03:00:06+07:00
-draft: true
 ---
 
 # Unit Testing - Những bước chân đầu tiên
