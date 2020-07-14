@@ -203,7 +203,7 @@ Các mục tiếp theo sẽ cung cấp thêm chi tiết về một số tính n�
 
 Sơ đồ dưới đây thể hiện thứ tự thực hiện các phương thức khi được đánh dấu với annotion tương ứng:
 
-![quá trình thực hiện](_img/junit_annotations_2.png)
+![quá trình thực hiện](/_img/junit_annotations_2.png)
 
 Các annotaion `@BeforeAll`, `@BeforeEach`,`@AfterEach`, `@AfterAll` là những **thành phần cố định**, thực hiện các chức năng lặp đi lặp lại. Annotation `@Test` được dùng để xác định một test case.
 
@@ -364,11 +364,11 @@ void whenAssertingException_thenThrown() {
 
 Khi xây dựng phần mềm, AUT sẽ phụ thuộc vào các thành phần bên ngoài như cơ sở dữ liệu, API, hệ thống file,... Các thành phần phụ thuộc này có thể chưa sẵn sàng hoặc thậm chí chưa tồn tại ở thời điểm chúng ta viết Unit Test. Ngay cả khi những thành phần này đã được chuẩn bị sẵn sàng thì việc thực thi một test case có phụ thuộc sẽ chậm hơn vì phải cần thời gian đợi và tương tác với thành phần bên ngoài.
 
-![thành phần phụ thuộc](_img/mock_diagram.png)
+![thành phần phụ thuộc](/_img/mock_diagram.png)
 
 Cô lập AUT là một trong những kỹ thuật giúp giải quyết vấn đề trên. Và lúc này, chúng ta sẽ phải cần đến các mocking framework (tạm dịch là khung mô phỏng) để giả lập các thành phần bên ngoài, nhờ đó có thể cô lập và kiểm thử AUT dễ dàng hơn. Đối tượng mô phỏng này sẽ không gây phá vỡ cấu trúc mã nguồn khi đối tượng thật được thiết kế và triển khai.  Hình dưới đây thể hiện việc tạo hai đối tượng mô phỏng là Mock WS và Mock DB để thay thế sự phụ thuộc vào WebService và Database.
 
-![thành phần phụ thuộc](_img/mock_diagram_using.png)
+![thành phần phụ thuộc](/_img/mock_diagram_using.png)
 
 Việc tìm hiểu cách thiết lập và sử dụng các mocking framework này là bước quan trọng giúp mở rộng Unit Test cho các hệ thống lớn và phức tạp. Với lập trì viên Java, Mockito là một công cụ không thể thiếu.
 

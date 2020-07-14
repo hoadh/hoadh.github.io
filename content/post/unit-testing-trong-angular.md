@@ -106,7 +106,7 @@ Trong Jasmine, để thiết lập **Setup** và **Teardown**, chúng ta sử d�
 
 Thứ tự thực hiện của các hàm trên trong Jasmine được thể hiện như khối hình dưới đây.
 
-![jasmine_functions.png](_img/jasmine_functions.png)
+![jasmine_functions.png](/_img/jasmine_functions.png)
 
 ### done
 
