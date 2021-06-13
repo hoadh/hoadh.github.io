@@ -2,6 +2,8 @@
 title: "Unit Testing trong Angular"
 author: "hoad"
 date: 2020-07-15T03:17:53+07:00
+include_toc: true
+tags: ["Testing", "Unit Testing", "Automation Testing"]
 ---
 
 > Nếu bạn chưa biết Unit Testing và những khái niệm cơ bản liên quan, hãy tìm đọc bài viết **Unit Test - Những bước chân đầu tiên** trong Tạp Chí Lập Trình Vol.4.
