@@ -3,3 +3,21 @@ languageCode = "en-us"
 title = "hoa.d"
 theme = "hyde-hyde"
 disqusShortname = "hoa-d"
+googleAnalytics = "G-YLG1KEYLCC"
+[params]
+    description = "a simple man who loves reading his mind \"on-the-fly\"."
+
+[Menus]
+  main = [
+      {Name = "Github", URL = "https://github.com/hoadh/"},
+      {Name = "LinkedIn", URL = "https://www.linkedin.com/in/hoad/"}
+  ]
+
+[params.social]
+    gravatar = "danghuyhoa@gmail.com"
+
+[markup]
+    [markup.tableOfContents]
+        endLevel = 4
+        ordered = false
+        startLevel = 1
