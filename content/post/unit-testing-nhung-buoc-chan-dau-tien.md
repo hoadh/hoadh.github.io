@@ -19,8 +19,7 @@ Với bài viết này, bạn học được những nội dung sau:
 
 * Một số khái niệm cơ bản trong hoạt động testing và unit testing
 * Sử dụng JUnit trong dự án Java nói chung
-* Kết hợp Mockito và JUnit để thực hiện việc kiểm thử trong một số tình huống thực tế
-* Case Study và những bài học khi thực hiện kiểm thử
+* Kết hợp Mockito và JUnit để thực hiện kiểm thử khi có các thành phần phụ thuộc
 
 ## Lợi ích của Unit Testing
 
@@ -443,12 +442,6 @@ public void tryMockitoMock() {
 ```
 
 Ở phương thức trên, chúng ta mô phỏng hành vi lấy số lượng user thông qua phương thức `count()` được định nghĩa trong UserRepository. Khi `count()` được gọi, đối tượng mô phỏng sẽ trả về kết quả là `111` thay vì phải truy vấn vào cơ sở dữ liệu để lấy thông tin.
-
-## Case Study
-
-Dự án mà chúng ta sẽ thực hiện là một trang cửa hàng trực tuyến đơn giản hỗ trợ duyệt danh sách sản phẩm và thông tin chi tiết của từng mặt hàng. Khách hàng có thể chọn sản phẩm và lưu vào giỏ hàng để thanh toán.
-
-Trước khi thực sự viết mã, hãy thiết kế chi tiết bao gồm những interface, class và các phương thức có thể cần để thực hiện được ứng dụng này. Dựa vào bản thiết kế, hãy viết các unit test case cho ứng dụng.
 
 ## Chặng đường tiếp theo
 
