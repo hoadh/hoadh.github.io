@@ -4,8 +4,6 @@ author: "hoad"
 date: 2020-09-30T03:19:07+07:00
 ---
 
-# Áp dụng Luật Demeter
-
 >    "Không nói chuyện với người lạ"
 
 ## Giới thiệu

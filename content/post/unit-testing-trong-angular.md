@@ -4,8 +4,6 @@ author: "hoad"
 date: 2020-07-15T03:17:53+07:00
 ---
 
-# Unit Testing trong Angular
-
 > Nếu bạn chưa biết Unit Testing và những khái niệm cơ bản liên quan, hãy tìm đọc bài viết **Unit Test - Những bước chân đầu tiên** trong Tạp Chí Lập Trình Vol.4.
 
 Kiểm thử giúp đảm bảo những thay đổi hoặc bổ sung không gây ảnh hưởng đến các tính năng cũ của ứng dụng hoặc phát sinh lỗi mới. Chúng ta tiếp tục tìm hiểu cách viết unit test cho các ứng dụng được xây dựng với framework Angular. Cụ thể, qua bài viết này, chúng ta sẽ đạt được các mục tiêu sau:

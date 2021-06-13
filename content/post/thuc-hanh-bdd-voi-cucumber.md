@@ -4,8 +4,6 @@ author: "hoad"
 date: 2020-07-15T03:19:07+07:00
 ---
 
-# Thực hành BDD với Cucumber
-
 Behavior-driven development (BDD) là một quy trình phát triển phần mềm Agile. Quy trình này khuyến khích cộng tác giữa các vai trò kỹ-thuật (như QA, lập trình viên,...) với những vai trò phi-kỹ thuật (như chuyên gia lĩnh vực, người dùng,...) để chia sẻ một cách hiểu chung về những tính năng cần làm trong dự án.
 
 Để áp dụng BDD vào nhóm dự án, bên cạnh việc thực hành quy trình nhuần nhuyễn giữa các vai thì nghiên cứu sử dụng công cụ hỗ trợ cũng là một việc làm không thể thiếu. Trong phạm vi bài viết này, chúng ta sẽ tìm hiểu về Cucumber - một trong số những công cụ như thế.

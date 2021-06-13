@@ -4,8 +4,6 @@ author: "hoad"
 date: 2020-07-15T03:00:06+07:00
 ---
 
-# Unit Testing - Những bước chân đầu tiên
-
 > "Hành trình vạn dặm bắt đầu từ một bước chân." - Lão Tử
 
 ## Giới thiệu
