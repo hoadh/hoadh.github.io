@@ -3,10 +3,9 @@ title: "Khắc phục lỗi certificate bị thu hồi (Caddy server)"
 author: "hoad"
 date: 2021-06-13T15:44:17+07:00
 tags: ["Caddy", "TLS", "Certificate"]
-output:
-    rmarkdown::html_document:
-        toc: true
 ---
+
+## Vấn đề
 
 Trong số những dự án mà mình thực hiện, có một vài dự án sử dụng Caddy làm load balencer. Ưu điểm của Caddy là cấu hình dễ nhớ, xử lý khá tối ưu và yêu cầu cấu hình hạ tầng không quá cao. Nhờ thế mà tiết kiệm được chi phí vận hành hệ thống.
 
@@ -31,7 +30,7 @@ Ok. Biết tạm vậy đã. Giờ khắc phục thế nào?
 
 Về lý thuyết, Caddy sẽ tự động làm mới chứng chỉ khi hết hạn. Trong trường hợp này, chứng chỉ vẫn còn hiệu lực nên có vẻ như nó không xem xét tiếp tình huống bị thu hồi khi chưa hết hạn. Vì vậy, giải pháp nhanh và dễ thực hiện nhất trong tình huống này là đăng ký một chứng chỉ mới và cấu hình lại thông tin chứng chỉ mới cho Caddy (thay vì để Caddy tự quản lý).
 
-## Các bước thực hiện
+## Giải pháp
 
 ### Bước 1 - Cài đặt Certbot
 
@@ -69,7 +68,7 @@ sudo chmod 755 /etc/letsencrypt/live/
 
 Nếu thực thi lệnh trên mà lỗi vẫn còn tiếp diễn thì hãy xem tập tin trên có phải là một `soft linked file` không (Bằng cách sử dụng lệnh `ls -la`). Nếu đúng là `soft linked file` thì mở rộng quyền truy cập các tập tin gốc sẽ giải quyết được vấn đề.
 
-### Thông báo chứng chỉ bị thu hồi sẽ không hiển thị trên tất cả trình duyệt (phía client)
+### Thông báo hiển thị không đồng nhất trên các trình duyệt (client)
 
 Nếu chứng chỉ trên server bị thu hồi, có thể xảy ra hiện tượng sau với những người dùng truy cập vào hệ thống: "Một số thì truy cập được bình thường (không có dấu hiệu lỗi hay bị ảnh hưởng) và một số thì nhận thông báo chứng chỉ không an toàn". Hiện tượng này sẽ diễn ra trong khoảng 24 đến 48 giờ (chưa có số liệu chính xác).
 
