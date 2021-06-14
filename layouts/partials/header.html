@@ -12,12 +12,9 @@
     <link rel="shortcut icon" href="/favicon.png">
     {{ partial "header/feeds.html" . }}
     {{ partial "header/custom.html" }}
-    // css 
     {{ range .Site.Params.custom_css -}}
         <link rel="stylesheet" href="{{ . | absURL }}">
     {{- end }}
-
-    // javascript
     {{ range .Site.Params.custom_js -}}
         <script type="text/javascript" src="{{ . | absURL }}"></script>
     {{- end }}
