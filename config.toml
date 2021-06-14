@@ -4,17 +4,19 @@ title = "hoa.d"
 theme = "hyde-hyde"
 disqusShortname = "hoa-d"
 googleAnalytics = "G-YLG1KEYLCC"
-[params]
-    description = "a simple man who loves reading his mind \"on-the-fly\"."
 
-[Menus]
-  main = [
-      {Name = "Github", URL = "https://github.com/hoadh/"},
-      {Name = "LinkedIn", URL = "https://www.linkedin.com/in/hoad/"}
-  ]
+[params]
+    
+    description = "a simple man who loves reading his mind \"on-the-fly\"."
+    postNavigation = false
+    toc = "tocbot"
+    copyright = "hoad.kafa.io"
 
 [params.social]
-    gravatar = "danghuyhoa@gmail.com"
+    github = "hoadh"
+    linkedin = "hoad"
+    facebook = "hoadng"
+    telegram = "hoadang"
 
 [markup]
     [markup.tableOfContents]
