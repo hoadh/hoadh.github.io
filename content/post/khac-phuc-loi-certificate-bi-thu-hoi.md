@@ -5,11 +5,11 @@ date: 2021-06-13T15:44:17+07:00
 tags: ["Caddy", "TLS", "Certificate"]
 ---
 
-## Vấn đề
-
 Trong số những dự án mà mình thực hiện, có một vài dự án sử dụng Caddy làm load balencer. Ưu điểm của Caddy là cấu hình dễ nhớ, xử lý khá tối ưu và yêu cầu cấu hình hạ tầng không quá cao. Nhờ thế mà tiết kiệm được chi phí vận hành hệ thống.
 
-Tuy nhiên! Vào một ngày đẹp trời, mình truy cập vào hệ thống thì nhận được thông báo certificate bị thu hồi.
+## Vấn đề
+
+Vào một ngày đẹp trời, mình truy cập vào hệ thống thì nhận được thông báo certificate bị thu hồi.
 
 ![image-20210613093327282](/_img/image-20210613093327282.png)
 
