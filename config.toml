@@ -6,11 +6,11 @@ disqusShortname = "hoa-d"
 googleAnalytics = "G-YLG1KEYLCC"
 
 [params]
-    
     description = "a simple man who loves reading his mind \"on-the-fly\"."
     postNavigation = false
     toc = "tocbot"
     copyright = "hoad.kafa.io"
+    custom_css = ["css/custom.css"]
 
 [params.social]
     github = "hoadh"
