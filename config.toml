@@ -1,4 +1,4 @@
-baseURL = "https://hoad.kafa.io/"
+baseURL = "https://hoad.kafe.one/"
 languageCode = "en-us"
 title = "hoa.d"
 theme = "hyde-hyde"
@@ -9,7 +9,7 @@ googleAnalytics = "G-YLG1KEYLCC"
     description = "a simple man who loves reading his mind \"on-the-fly\"."
     postNavigation = false
     toc = "tocbot"
-    copyright = "hoad.kafa.io"
+    copyright = "hoad.kafe.one"
     custom_css = ["css/custom.css"]
 
 [params.social]
