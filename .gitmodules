@@ -1,6 +1,3 @@
-[submodule "themes/hugo-swift-theme"]
-	path = themes/hugo-swift-theme
-	url = https://github.com/onweru/hugo-swift-theme.git
 [submodule "themes/hype-hyde"]
 	path = themes/hype-hyde
 	url = https://github.com/htr3n/hyde-hyde.git
