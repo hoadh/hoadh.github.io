@@ -28,6 +28,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/master'
         with:
-          github_token: ${{ secrets.PRIVATE_KEY }}
+          deploy_key: ${{ secrets.PRIVATE_KEY }}
           external_repository: hoadh/hoadh.github.io
           publish_dir: ./public
