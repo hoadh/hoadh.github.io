@@ -1,0 +1,410 @@
+<!doctype html><html lang=en-us>
+<head>
+<link href=https://gmpg.org/xfn/11 rel=profile>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name=generator content="Hugo 0.89.2">
+<title>Unit Testing - Những bước chân đầu tiên • hoa.d</title>
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Unit Testing - Những bước chân đầu tiên">
+<meta name=twitter:description content="&ldquo;Hành trình vạn dặm bắt đầu từ một bước chân.&rdquo; - Lão Tử
+ Giới thiệu Chất lượng công việc là một trong những yếu tố quan trọng xác định thành công của bạn tại nơi làm việc. Có nhiều cách để làm điều này trong lĩnh vực công nghệ phần mềm. Nhưng có một cách dễ dàng và hiệu quả là áp dụng kiểm thử. Lý do đơn giản là khả năng viết mã đạt chất lượng thường quan trọng hơn nhiều so với việc viết một khối lượng lớn mã khó bảo trì và tồn tại nhiều lỗi.">
+<meta property="og:title" content="Unit Testing - Những bước chân đầu tiên">
+<meta property="og:description" content="&ldquo;Hành trình vạn dặm bắt đầu từ một bước chân.&rdquo; - Lão Tử
+ Giới thiệu Chất lượng công việc là một trong những yếu tố quan trọng xác định thành công của bạn tại nơi làm việc. Có nhiều cách để làm điều này trong lĩnh vực công nghệ phần mềm. Nhưng có một cách dễ dàng và hiệu quả là áp dụng kiểm thử. Lý do đơn giản là khả năng viết mã đạt chất lượng thường quan trọng hơn nhiều so với việc viết một khối lượng lớn mã khó bảo trì và tồn tại nhiều lỗi.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://hoadh.github.io/post/unit-testing-nhung-buoc-chan-dau-tien/"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2020-07-15T03:00:06+07:00">
+<meta property="article:modified_time" content="2020-07-15T03:00:06+07:00">
+<link rel=stylesheet href=/scss/hyde-hyde.3081c4981fb69a2783dd36ecfdd0e6ba7a158d4cbfdd290ebce8f78ba0469fc6.css integrity="sha256-MIHEmB+2mieD3Tbs/dDmunoVjUy/3SkOvOj3i6BGn8Y=">
+<link rel=stylesheet href=/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58+TzH3icCkSHGoJ+ed7w=" media=print>
+<link rel=stylesheet href=/scss/tocbot.5ef07cebc3c477b54270456f149ee02922479bb7555fd344b2c69f953b0e7e5e.css integrity="sha256-XvB868PEd7VCcEVvFJ7gKSJHm7dVX9NEssaflTsOfl4="><!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js></script>
+<script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]-->
+<link rel=apple-touch-icon-precomposed sizes=144x144 href=/apple-touch-icon-144-precomposed.png>
+<link rel="shortcut icon" href=/favicon.png>
+<link rel=stylesheet href=https://hoadh.github.io/css/custom.css>
+</head>
+<body>
+<div class=sidebar>
+<div class=container>
+<div class=sidebar-about>
+<span class=site__title>
+<a href=https://hoadh.github.io/>
+hoa.d
+</a>
+</span>
+<p class=site__description>
+a simple man who loves reading his mind "on-the-fly".
+</p>
+</div>
+<div class=collapsible-menu>
+<input type=checkbox id=menuToggle>
+<label for=menuToggle>hoa.d</label>
+<div class=menu-content>
+<div>
+<ul class=sidebar-nav>
+</ul>
+</div>
+<section class=social>
+<a href=https://facebook.com/hoadng rel=me><i class="fab fa-facebook-f"></i></a>
+<a href=https://github.com/hoadh rel=me><i class="fab fa-github fa-lg" aria-hidden=true></i></a>
+<a href=https://linkedin.com/in/hoad rel=me><i class="fab fa-linkedin fa-lg" aria-hidden=true></i></a>
+<a href=https://t.me/hoadang rel=me><i class="fab fa-telegram fa-lg" aria-hidden=true></i></a>
+</section>
+</div>
+</div>
+<div class=copyright>
+&copy; 2021 hoadh.github.io
+</div>
+</div>
+</div>
+<div class="content container">
+<article>
+<header>
+<h1>Unit Testing - Những bước chân đầu tiên</h1>
+<div class=post__meta>
+<i class="fas fa-calendar-alt"></i> Jul 15, 2020
+<br>
+<i class="fas fa-clock"></i> 19 min read
+</div>
+</header>
+<div class=toc-wrapper>
+<input type=checkbox id=tocToggle>
+<label for=tocToggle>Table of Content</label>
+<div class=toc id=TableOfContents></div>
+</div>
+<div class=post>
+<blockquote>
+<p>&ldquo;Hành trình vạn dặm bắt đầu từ một bước chân.&rdquo; - Lão Tử</p>
+</blockquote>
+<h2 id=giới-thiệu>Giới thiệu</h2>
+<p>Chất lượng công việc là một trong những yếu tố quan trọng xác định thành công của bạn tại nơi làm việc. Có nhiều cách để làm điều này trong lĩnh vực công nghệ phần mềm. Nhưng có một cách dễ dàng và hiệu quả là áp dụng kiểm thử. Lý do đơn giản là khả năng viết mã đạt chất lượng thường quan trọng hơn nhiều so với việc viết một khối lượng lớn mã khó bảo trì và tồn tại nhiều lỗi.</p>
+<p>Unit Test (Kiểm thử đơn vị) là kỹ thuật kiểm thử những khối thành phần nhỏ nhất trong phần mềm (thường là các hàm hoặc phương thức). Đây là một trong những cấp độ kiểm thử đơn giản và có thể bắt đầu sớm trong vòng đời phát triển phần mềm. Thậm chí, bạn có thể viết unit test trước khi viết mã. Tuy nhiên, đây không phải là một thuật ngữ mới trong lĩnh vực phần mềm. Khái niệm unit test xuất hiện lần đầu trong ngôn ngữ lập trình Smalltalk vào những năm 1970. Đến nay, unit test gần như đã trở thành một chuẩn mực trong ngành bởi mục đích của nó là phục vụ yêu cầu nâng cao chất lượng sản phẩm phần mềm.</p>
+<p>Với nhiều lập trình viên, dù mới vào nghề hay đã gạo cội, thì unit test là một trong những kỹ năng không thể thiếu khi làm việc. Nếu bạn chưa từng nghe qua hoặc chưa có điều kiện thực hành thì cùng bước những bước chân đầu tiên qua bài viết này nhé!</p>
+<h2 id=bài-viết-này-có-gì>Bài viết này có gì</h2>
+<p>Với bài viết này, bạn học được những nội dung sau:</p>
+<ul>
+<li>Một số khái niệm cơ bản trong hoạt động testing và unit testing</li>
+<li>Sử dụng JUnit trong dự án Java nói chung</li>
+<li>Kết hợp Mockito và JUnit để thực hiện kiểm thử khi có các thành phần phụ thuộc</li>
+</ul>
+<h2 id=lợi-ích-của-unit-testing>Lợi ích của Unit Testing</h2>
+<ul>
+<li>Tách rời việc kiểm thử với mã nguồn; không cần viết mã vào phương thức <code>main()</code> để có thể kiểm tra phương thức có hoạt động đúng đắn hay không.</li>
+<li>Duy trì một bộ kiểm thử liên tục được cập nhật.</li>
+<li>Đảm bảo mã mới không ảnh hưởng và gây lỗi tới những chức năng hiện có (qua việc thực hiện chạy lại toàn bộ bộ test đã viết từ trước).</li>
+</ul>
+<h2 id=thuật-ngữ>Thuật ngữ</h2>
+<p>Để đọc hiểu nội dung hướng dẫn này, bạn cần biết đến một số thuật ngữ thường được sử dụng trong các hoạt động kiểm thử.</p>
+<h3 id=test-case>Test case</h3>
+<p>Test case là các trường hợp cần kiểm thử với đầu vào và đầu ra được xác định cụ thể. Một test case thường có hai thành phần dưới đây:</p>
+<ul>
+<li>Expected value: Giá trị mà chúng ta mong đợi khối lệnh trả về</li>
+<li>Actual value: Giá trị thực tế mà khối lệnh trả về</li>
+</ul>
+<p>Sau khi thực hiện khối lệnh cần kiểm thử, chúng ta sẽ nhận được <code>actual value</code>. Lấy giá trị đó so sánh với <code>expected value</code>. Nếu hai giá trị này trùng khớp nhau thì kết quả của test case là <code>PASS</code>. Ngược lại, kết quả là <code>FAIL</code>.</p>
+<h3 id=application-hoặc-code-under-test>Application (hoặc Code) Under Test</h3>
+<p>Application Under Test (AUT)) là thuật ngữ thường được dùng để chỉ đến hệ thống/ứng dụng đang được kiểm thử. Với hoạt động unit test, các đơn vị kiểm thử của chúng ta là những thành phần nhỏ nhất trong hệ thống nên có thể dùng các thuật ngữ khác phù hợp hơn như Code Under Test (CUT).</p>
+<h3 id=mock-và-stub>Mock và Stub</h3>
+<p>Đây là các thành phần bên ngoài được mô phỏng hoặc giả lập trong ngữ cảnh của hoạt động kiểm thử. Thông thường, để AUT hoạt động đúng chức năng thì sẽ cần đến những thành phần bên ngoài như Web Service, Database,&mldr; Ở cấp độ unit test, chúng ta cần phải tách rời các thành phần phụ thuộc này để có thể dễ dàng thực thi test case. Phần này sẽ được giải thích rõ hơn trong mục <code>Sử dụng Mockito (Mocking framework)</code>.</p>
+<p>Lưu ý: Ngoài thuật ngữ mock và stub, thỉnh thoảng bạn sẽ gặp các từ khác như Spy và Fake.</p>
+<h2 id=thiết-kế-test-case>Thiết kế test case</h2>
+<p>Trong phần này, chúng ta sẽ tìm hiểu các loại test case, cấu trúc thường gặp ở một test case và xem xét một số yếu tố tạo nên một test case tốt. Dựa vào các đặc tính đó, chúng ta sẽ tìm hiểu những nguyên tắc để có thể thiết kế và thực hiện được các test case tốt.</p>
+<h3 id=phân-loại-test-case>Phân loại test case</h3>
+<ol>
+<li>Positive test case: Là những trường hợp kiểm thử đảm bảo người dùng có thể thực hiện được thao tác với dữ liệu hợp lệ.</li>
+<li>Negative test case: Là những trường hợp kiểm thử tìm cách gây lỗi cho ứng dụng bằng cách sử dụng các dữ liệu không hợp lệ.</li>
+</ol>
+<p>Hãy làm rõ các loại test case trên qua một ví dụ đơn giản như sau. Giả sử, chúng ta đang thiết kế ứng dụng đặt phòng khách sạn và có một yêu cầu là:</p>
+<blockquote>
+<p>Hệ thống cho phép khách hàng có thể đặt phòng mới với thời gian xác định.</p>
+</blockquote>
+<p>Với yêu cầu trên, chúng ta có một số trường hợp cần kiểm thử như sau:</p>
+<ul>
+<li>Trường hợp <strong>positive</strong> là đảm bảo có thể thêm phòng với các dữ liệu hợp lệ như mã phòng cần đặt, thời gian hợp lệ, mã khách hàng hợp lệ, giá tiền được tính với số ngày đặt,&mldr;</li>
+<li>Còn các trường hợp <strong>negative</strong> sẽ cố gắng thực hiện thao tác đặt phòng với những dữ liệu không hợp lệ như:
+<ul>
+<li>Đặt phòng mới mà không có mã phòng</li>
+<li>Đặt phòng mới với thời gian không hợp lệ (thời gian ở quá khứ)</li>
+<li>Đặt phòng mới với mã khách hàng không tồn tại trong cơ sở dữ liệu</li>
+<li>Đặt phòng mới với giá tiền âm (nhỏ hơn 0).</li>
+<li>&mldr; và nhiều trường hợp khác</li>
+</ul>
+</li>
+</ul>
+<p>Hy vọng qua ví dụ trên, bạn có thể phân loại được các test case và tự xác định được các test case cho yêu cầu phần mềm mà bạn đang thực hiện.</p>
+<h3 id=cấu-trúc-một-test-case>Cấu trúc một test case</h3>
+<p>Các trúc mã mà chúng ta nên tuân thủ trong một test case là <code>cấu trúc AAA</code>. Cấu trúc này gồm 3 thành phần:</p>
+<ul>
+<li>Arrange - Chuẩn bị dữ liệu đầu vào và các điều kiện khác để thực thi test case.</li>
+<li>Act - Thực hiện việc gọi phương thức/hàm với đầu vào đã được chuẩn bị ở <code>Arrange</code> và nhận về kết quả thực tế.</li>
+<li>Assert - So sánh giá trị mong đợi và giá trị thực tế nhận được ở bước <code>Act</code>. Kết quả của test case sẽ là một trong hai trạng thái sau:
+<ul>
+<li>PASS: nếu kết quả mong đợi và kết quả thực tế khớp nhau</li>
+<li>FAIL: nếu kết quả mong đợi khác với kết quả thực tế</li>
+</ul>
+</li>
+</ul>
+<p>Đôi khi bạn sẽ bắt gặp một số bài viết dùng từ <code>cấu trúc Given-When-Then</code>. Về bản chất, cũng chính là <code>cấu trúc AAA</code> như trên.</p>
+<h3 id=thành-phần-cố-định-fixtures>Thành phần cố định (Fixtures)</h3>
+<p>Là những thành phần được lặp đi lặp lại qua mỗi test case và có thể chia sẻ các thao tác chung giữa các test case. Ví dụ: thiết lập cấu hình hoặc chuẩn bị dữ liệu trước khi bộ test được thực thi, và dọn dẹp bộ nhớ sau khi hoàn thành. Thành phần cố định phải được đặt lên trên cùng của bộ kiểm thử.</p>
+<p>Có bốn loại thành phần cố định chính:</p>
+<h4 id=setup>Setup</h4>
+<p>Là thành phần được thực thi trước khi test case thực thi. Trong một số thư viện xUnit (công cụ hỗ trợ viết và thực thi unit test), chúng ta thường gặp những phương thức/hàm, hoặc annotion có tên là <code>BeforeEach</code>. Thành phần này chính là <strong>Setup</strong>.</p>
+<h4 id=one-time-setup>One-Time Setup</h4>
+<p>Là thành phần được thực thi đầu tiên (trước cả khi cả <code>setup</code> và <code>test case</code> được thực thi). Trong một số thư viện xUnit (công cụ hỗ trợ viết và thực thi unit test), chúng ta thưsờng gặp những phương thức/hàm, hoặc annotion có tên là <code>BeforeAll</code>. Thành phần này chính là <strong>One-Time Setup</strong>.</p>
+<h4 id=teardown>Teardown</h4>
+<p>Là thành phần được thực thi sau khi <code>test case</code> được thực thi. Trong một số thư viện xUnit (công cụ hỗ trợ viết và thực thi unit test), chúng ta thường gặp những phương thức/hàm, hoặc annotion có tên là <code>AfterEach</code>. Thành phần này chính là <strong>Teardown</strong>.</p>
+<h4 id=one-time-teardown>One-Time Teardown</h4>
+<p>Là thành phần được thực thi sau cùng (sau khi tất cả <code>test case</code> và <code>teardown</code> được thực thi). Trong một số thư viện xUnit (công cụ hỗ trợ viết và thực thi unit test), chúng ta thường gặp những phương thức/hàm, hoặc annotion có tên là <code>AfterAll</code>. Thành phần này chính là <strong>One-Time Teardown</strong>.</p>
+<h3 id=đặc-tính-của-một-unit-test-tốt>Đặc tính của một unit test tốt</h3>
+<p>Một ca kiểm thử tốt sẽ có những đặc tính sau đây:</p>
+<ul>
+<li>Dễ viết - Có thể bao quát được nhiều trường hợp kiểm thử mà không mất quá nhiều công sức.</li>
+<li>Dễ đọc - Có thể mô tả được chính xác hành vi hoặc chức năng được kiểm thử.</li>
+<li>Tự động hoá - Có thể thực thi lặp lại nhiều lần.</li>
+<li>Dễ thực thi và thực thi nhanh.</li>
+<li>Đồng nhất - Luôn trả về cùng kết quả sau mỗi lần chạy (nếu không thay đổi mã nguồn bên trong).</li>
+<li>Cô lập - Có thể thực thi độc lập mà không phụ thuộc vào các thành phần khác trong hệ thống. <em>Bạn có thể tham khảo mục &ldquo;Sử dụng Mockito&rdquo; để làm rõ hơn ý này.</em></li>
+<li>Khi kết quả kiểm thử thất bại (FAILED), có thể dễ dàng tìm ra giá trị mong đợi và nhanh chóng xác định được vấn đề.</li>
+</ul>
+<h3 id=quy-ước-đặt-tên>Quy ước đặt tên</h3>
+<h4 id=tên-lớp-chứa-mã-kiểm-thử>Tên lớp chứa mã kiểm thử</h4>
+<p>Tên lớp chứa mã kiểm thử thường sử dụng hậu tố &ldquo;Tests&rdquo; sau tên lớp được kiểm thử. Ví dụ: tên lớp là StockService thì tên lớp chứa mã kiểm thử sẽ là StockServiceTests.</p>
+<h4 id=tên-phương-thức-kiểm-thử-test-case>Tên phương thức kiểm thử (test case)</h4>
+<p>Theo nguyên tắc, tên phương thức kiểm thử phải giải thích nhiệm vụ rõ ràng. Có thể tham khảo một số quy ướt đặt tên cho phương thức như sau:</p>
+<ol>
+<li>Sử dụng từ <strong>should</strong>. Ví dụ: <strong>favouriteStocksShouldbeSaved</strong>, <strong>todayPriceShouldBeShowed</strong>.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>favouriteStocksShouldbeSaved</span><span style=color:#f92672>()</span> <span style=color:#f92672>{}</span>
+</code></pre></div><ol start=2>
+<li>Viết theo mẫu <strong>Given[Đầu-Vào]When[Hành-Vi]Then[Kết-Quả-Mong-Đợi]</strong>. Ví dụ:</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>GivenNullUsernameWhenCreateStudentThenShouldThrowException</span><span style=color:#f92672>()</span> <span style=color:#f92672>{}</span>
+</code></pre></div><ol start=3>
+<li>Viết theo mẫu <strong>when[hành-vi]_then[Kết-quả]</strong></li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenEnterValidUsernameAndPassword_thenLoginSuccessfully</span><span style=color:#f92672>()</span> <span style=color:#f92672>{}</span>
+</code></pre></div><h3 id=gợi-ý-viết-kiểm-thử-tốt>Gợi ý viết kiểm thử tốt</h3>
+<ol>
+<li>Mỗi test case nên là một phương thức độc lập, có thể thực thi mà không phụ thuộc vào bất kỳ test case nào khác.</li>
+<li>Thứ tự thực hiện của mỗi test case không nên ảnh hưởng đến kết quả thực thi (mặc dù có thể).</li>
+<li>Khi phát hiện bug trong chương trình, hãy viết ngay kiểm thử cho trường hợp xảy ra bug đó để có thể kiểm tra lại sau này.</li>
+<li>Tên phương thức kiểm thử phải rõ ràng. Vì vậy không phải do dự nếu tên phương thức quá dài. Ví dụ <code>TestDivisionWhenNumPositiveDenomNegative</code> tốt hơn <code>DivisionTest3</code>.</li>
+<li>Hãy kiểm thử những trường hợp ném ra ngoại lệ (nếu có). Ví dụ <code>WhenDivisionByZeroShouldThrowException</code>.</li>
+<li>Hãy kiểm thử các trường hợp <em>negative</em> để làm rõ hình thức phản hồi khi đầu vào là dữ liệu không hợp lệ.</li>
+</ol>
+<h2 id=sử-dụng-junit>Sử dụng JUnit</h2>
+<p>Hiện nay, JUnit được tích hợp và hỗ trợ ở phần lớn các IDE hiện tại cho Java (như Eclipse, IntelliJ, NetBeans,&mldr;). Việc sử dụng JUnit trong các dự án Java không khó. Các bạn có thể tìm hiểu cách cài đặt thư viện cho dự án của mình qua những hướng dẫn trên mạng.</p>
+<p>Trong mục này, chúng ta sẽ cùng lượt qua những tính năng được hỗ trợ trong JUnit 5 - phiên bản mới nhất hiện nay.</p>
+<h3 id=ví-dụ-đầu-tiên>Ví dụ đầu tiên</h3>
+<p>Dưới đây là ví dụ giúp bạn có cái nhìn tổng quan về một kiểm thử được viết với JUnit5:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#f92672>import</span> com.codegym.Calculator<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> org.junit.jupiter.api.Test<span style=color:#f92672>;</span>
+<span style=color:#f92672>import static</span> org.junit.jupiter.api.Assertions.assertEquals<span style=color:#f92672>;</span>
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CalculatorTests</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> Calculator calculator <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Calculator<span style=color:#f92672>();</span>
+
+    <span style=color:#a6e22e>@Test</span>
+    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>shouldReturn2When1Plus1</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        assertEquals<span style=color:#f92672>(</span>2<span style=color:#f92672>,</span> calculator<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>1<span style=color:#f92672>,</span> 1<span style=color:#f92672>));</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Giải thích ví dụ:</p>
+<ul>
+<li><code>@Test</code> là annotation đánh dấu phương thức <code>shouldReturn2When1Plus1()</code> là một test case. Hãy chú ý rằng tên của phương thức test được viết rất rõ là <code>nên trả về kết quả 2 khi 1 cộng 1</code>.</li>
+<li>Ở phần thân của phương thức chứa một dòng mã kiểm tra kết quả của phương thức <code>add()</code> với đầu vào là hai số có giá trị lần lượt là <code>1</code> và <code>1</code>.</li>
+<li>So sánh giá trị thực tế trả về của phương <code>add()</code> với giá trị mong đợi là <code>2</code>.</li>
+<li>Sau khi chạy test case này, kết quả sẽ là <code>PASS</code> nếu phương thức <code>add(1, 1))</code> trả về kết quả đúng bằng <code>2</code>.</li>
+</ul>
+<p>Các mục tiếp theo sẽ cung cấp thêm chi tiết về một số tính năng cơ bản được hỗ trợ trong JUnit5.</p>
+<h3 id=các-annotation-trong-junit>Các annotation trong JUnit</h3>
+<p>Sơ đồ dưới đây thể hiện thứ tự thực hiện các phương thức khi được đánh dấu với annotion tương ứng:</p>
+<p><img src=/_img/junit_annotations_2.png alt="quá trình thực hiện"></p>
+<p>Các annotaion <code>@BeforeAll</code>, <code>@BeforeEach</code>,<code>@AfterEach</code>, <code>@AfterAll</code> là những <strong>thành phần cố định</strong>, thực hiện các chức năng lặp đi lặp lại. Annotation <code>@Test</code> được dùng để xác định một test case.</p>
+<h4 id=beforeeach>@BeforeEach</h4>
+<p>Which annotation is used in JUnit5 to define a method that must be executed before each test case?</p>
+<h4 id=beforeall>@BeforeAll</h4>
+<p>Which annotation is used in JUnit5 to define a method that must be executed just once before all the test cases?</p>
+<h3 id=assertions>Assertions</h3>
+<p>Assertions là lớp chứa các phương thức hỗ trợ đánh giá các điều kiện trong kiểm thử.</p>
+<p>So với phiên bản trước, JUnit 5 vẫn giữ các phương thức cũ và thêm một số phương thức mới tận dụng những tích năng của Java 8.</p>
+<p>Dưới đây là danh sách những phương thức assertion có trong JUnit5.</p>
+<h4 id=asserttrue-và-assertfalse>assertTrue và assertFalse</h4>
+<p>Phương thức <code>assertTrue</code> được dùng để kiểm tra kết quả của điều kiện có bằng <code>true</code> hay không. Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenAssertingConditions_thenVerified</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    assertTrue<span style=color:#f92672>(</span>10 <span style=color:#f92672>&gt;</span> 5<span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;10 lớn hơn 5&#34;</span><span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Ngược lại, phương thức <code>assertFalse</code> được dùng để kiểm tra kết quả của điều kiện có bằng <code>false</code> hay không.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenAssertingConditions_thenVerified</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    assertTrue<span style=color:#f92672>(</span>5 <span style=color:#f92672>&gt;</span> 10<span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;5 không lớn hơn 10&#34;</span><span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h4 id=assertequals-và-assertnotequals>assertEquals và assertNotEquals</h4>
+<p>Phương thức <code>assertEquals</code> được dùng để kiểm tra giá trị mong đợi và thực tế có bằng nhau hay không. Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenAssertingConditions_thenVerified</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+  	String actual <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> String<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;CodeGym&#34;</span><span style=color:#f92672>).</span><span style=color:#a6e22e>toUpperCase</span><span style=color:#f92672>();</span>
+  	String expected <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;CODEGYM&#34;</span><span style=color:#f92672>;</span>
+  	assertEquals<span style=color:#f92672>(</span>expected<span style=color:#f92672>,</span> actual<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Ngược lại, Phương thức <code>assertNotEquals</code> được dùng để kiểm tra giá trị mong đợi và thực tế có bằng nhau hay không. Chúng ta cập nhật lại ví dụ ở trên:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenAssertingConditions_thenVerified</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+  	<span style=color:#75715e>// thay thế phương thức toUpperCase() thành toLowerCase()
+</span><span style=color:#75715e></span>  	String actual <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> String<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;CodeGym&#34;</span><span style=color:#f92672>).</span><span style=color:#a6e22e>toLowerCase</span><span style=color:#f92672>();</span>
+  	String expected <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;CODEGYM&#34;</span><span style=color:#f92672>;</span>
+  	assertNotEquals<span style=color:#f92672>(</span>expected<span style=color:#f92672>,</span> actual<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Với trường hợp các giá trị chúng ta đang so sánh thuộc kiểu Object, <code>assertEquals</code> và <code>assertNotEquals</code> sẽ gọi phương thức <code>equals</code> để so sánh giá trị.</p>
+<p>Có một điểm cần lưu ý nếu giá trị là kiểu số thực (<code>float</code> hoặc <code>double</code>). Trên thực tế, có nhiều trường hợp mà giá trị số thực mong đợi và thực tế có thể chênh lệch với nhau trong khoảng chấp nhận được. Với tình huống này, phương thức <code>assertEquals</code> và <code>assertNotEquals</code> hỗ trợ tham số thứ ba là <code>delta</code> (bên cạnh <code>expected</code> và <code>actual</code>). Chúng ta cùng xem qua ví dụ dưới đây:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenAssertingConditions_thenVerified</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>float</span> actual <span style=color:#f92672>=</span> 12 <span style=color:#f92672>/</span> 3<span style=color:#f92672>.</span><span style=color:#a6e22e>0001f</span><span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>float</span> expected <span style=color:#f92672>=</span> 4<span style=color:#f92672>;</span>
+    assertEquals<span style=color:#f92672>(</span>expected<span style=color:#f92672>,</span> actual<span style=color:#f92672>,</span> 0<span style=color:#f92672>.</span><span style=color:#a6e22e>001f</span><span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Kết quả của phép chia 12 cho 3.001 thì sẽ là một số thực 3.9998667. Kết quả của ca kiểm thử ví dụ trên là <strong>PASSED</strong> vì chúng ta đã cho phép mức chênh lệch tối đa là 0.001.</p>
+<h4 id=assertarrayequals>assertArrayEquals</h4>
+<p>Phương thức <code>assertArrayEquals</code> có thể xác nhận mảng mong đợi và thực tế có bằng nhau hay không. Chúng ta cùng xem xét ví dụ dưới đây:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenAssertingArraysEquality_thenEqual</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>char</span><span style=color:#f92672>[]</span> expected <span style=color:#f92672>=</span> <span style=color:#f92672>{</span> <span style=color:#e6db74>&#39;C&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;o&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;d&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;e&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;G&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;y&#39;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#39;m&#39;</span> <span style=color:#f92672>};</span>
+    <span style=color:#66d9ef>char</span><span style=color:#f92672>[]</span> actual <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;CodeGym&#34;</span><span style=color:#f92672>.</span><span style=color:#a6e22e>toCharArray</span><span style=color:#f92672>();</span>
+ 
+    assertArrayEquals<span style=color:#f92672>(</span>expected<span style=color:#f92672>,</span> actual<span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Mảng phải giống nhau&#34;</span><span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h4 id=assertsame-và-assertnotsame>assertSame và assertNotSame</h4>
+<p>Khu chúng ta muốn xác nhận giá trị mong đợi và thực tế tham chiếu đến cùng một đối tượng hay không, chúng ta phải dùng <code>assertSame </code> hoặc <code>assertNotSame</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenAssertingSameObject_thenVerified</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    String actual <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> String<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;CodeGym&#34;</span><span style=color:#f92672>);</span>
+    String expected <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;CodeGym&#34;</span><span style=color:#f92672>;</span>
+  
+    assertSame<span style=color:#f92672>(</span>expected<span style=color:#f92672>,</span> actual<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Kết quả của phương thức test trên là <strong>FAILED</strong> vì hai biến <code>actual</code> và <code>expected</code> đang tham chiếu đến hai đối tượng khác nhau trong bộ nhớ.</p>
+<p>Chúng ta nên lưu ý về sự khác nhau giữa <code>assertSame</code> và <code>assertEquals</code> (đã tìm hiểu ở ví dụ trước):</p>
+<ul>
+<li><code>assertEquals</code> chỉ quan tâm đến giá trị có bằng nhau không (thông qua phương thức <code>equals</code>) mà không cần biết hai giá trị được so sánh có phải cùng là một đối tượng hay không.</li>
+<li><code>assertSame</code> sẽ trả về PASSED chỉ khi cả hai biến cùng tham chiếu đến một đối tượng.</li>
+</ul>
+<h4 id=assertiterableequals>assertIterableEquals</h4>
+<p><code>assertIterableEquals</code> so sánh các giá trị được chứa bên trong hai đối tượng kiểu Iterable. Để trả về kết quả PASSED, hai iterable phải trả về bằng số phân tử, giá trị của các phần tử đó và cả vị trí của các phần tử. Hãy cùng xem ví dụ dưới đây:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>givenTwoLists_whenAssertingIterables_thenEquals</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    Iterable<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> al <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;&gt;(</span>asList<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;CodeGym&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Coding&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Bootcamp&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Java&#34;</span><span style=color:#f92672>));</span>
+    Iterable<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> ll <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> LinkedList<span style=color:#f92672>&lt;&gt;(</span>asList<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;CodeGym&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Coding&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Bootcamp&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;Java&#34;</span><span style=color:#f92672>));</span>
+
+    assertIterableEquals<span style=color:#f92672>(</span>al<span style=color:#f92672>,</span> ll<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Kết quả của test case trên là <strong>PASSED</strong>. Phương thức <code>assertIterableEquals</code> chỉ so sánh giá trị các phần tử bên trong mà không quan tâm đến việc các phần tử này đang được lưu trữ tại hai biến thuộc kiểu khác nhau (ArrayList và LinkedList).</p>
+<h4 id=assertthrows>assertThrows</h4>
+<p>Để có thể xác nhận được phương thức đang kiểm thử có ném ra một ngoại lệ hay không, chúng ta có thể sử dụng <code>assertThrows</code>. Giả sử chúng ta có một phương thức như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>throwAnException</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+	  <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalArgumentException<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Tham số không hợp lệ&#34;</span><span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+
+</code></pre></div><p>Dùng cách thức dưới đây để kiểm tra xem phương thức <code>throwAnExcepiont()</code> có ném ra một ngoại lệ hay không, và ngoại lệ đó có phải là <code>IllegalArgumentException</code> hay không:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>whenAssertingException_thenThrown</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    Exception e <span style=color:#f92672>=</span> assertThrows<span style=color:#f92672>(</span>IllegalArgumentException<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>,</span> <span style=color:#f92672>()</span> <span style=color:#f92672>-&gt;</span> throwAnException<span style=color:#f92672>());</span>
+    assertEquals<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Tham số không hợp lệ&#34;</span><span style=color:#f92672>,</span> e<span style=color:#f92672>.</span><span style=color:#a6e22e>getMessage</span><span style=color:#f92672>());</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h4 id=các-assertion-khác>Các assertion khác</h4>
+<ul>
+<li>assertLinesMatch</li>
+<li>fail</li>
+<li>assertNotNull và assertNull</li>
+<li>assertAll</li>
+<li>assertTimeout và assertTimeoutPreemptively</li>
+</ul>
+<h2 id=sử-dụng-mockito-mocking-framework>Sử dụng Mockito (Mocking framework)</h2>
+<p>Khi xây dựng phần mềm, AUT sẽ phụ thuộc vào các thành phần bên ngoài như cơ sở dữ liệu, API, hệ thống file,&mldr; Các thành phần phụ thuộc này có thể chưa sẵn sàng hoặc thậm chí chưa tồn tại ở thời điểm chúng ta viết Unit Test. Ngay cả khi những thành phần này đã được chuẩn bị sẵn sàng thì việc thực thi một test case có phụ thuộc sẽ chậm hơn vì phải cần thời gian đợi và tương tác với thành phần bên ngoài.</p>
+<p><img src=/_img/mock_diagram.png alt="thành phần phụ thuộc"></p>
+<p>Cô lập AUT là một trong những kỹ thuật giúp giải quyết vấn đề trên. Và lúc này, chúng ta sẽ phải cần đến các mocking framework (tạm dịch là khung mô phỏng) để giả lập các thành phần bên ngoài, nhờ đó có thể cô lập và kiểm thử AUT dễ dàng hơn. Đối tượng mô phỏng này sẽ không gây phá vỡ cấu trúc mã nguồn khi đối tượng thật được thiết kế và triển khai. Hình dưới đây thể hiện việc tạo hai đối tượng mô phỏng là Mock WS và Mock DB để thay thế sự phụ thuộc vào WebService và Database.</p>
+<p><img src=/_img/mock_diagram_using.png alt="thành phần phụ thuộc"></p>
+<p>Việc tìm hiểu cách thiết lập và sử dụng các mocking framework này là bước quan trọng giúp mở rộng Unit Test cho các hệ thống lớn và phức tạp. Với lập trì viên Java, Mockito là một công cụ không thể thiếu.</p>
+<h3 id=tạo-đối-tượng-mô-phỏng>Tạo đối tượng mô phỏng</h3>
+<p>Phương thức <code>mock()</code> cho phép chúng ta tạo đối tượng mô phỏng từ một class hoặc interface. Phương thức này không yêu cầu thêm gì khi sử dụng. Và nó có thể tạo các thuộc tính class mô phỏng hoặc các đối tượng mô phỏng cần dùng trong phương thức. Ví dụ dưới đây thể hiện cách tạo một đối tượng mô phỏng kiểu <code>UserRepository</code> (đã được định nghĩa trước):</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>StockRepository stockRepository <span style=color:#f92672>=</span> mock<span style=color:#f92672>(</span>StockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+</code></pre></div><h3 id=mô-phỏng-hành-vi>Mô phỏng hành vi</h3>
+<p>Sử dụng phương thức <code>when()</code> để mô phỏng hành vi của đối tượng. Để xác định kết quả thực hiện, chúng ta có thể sử dụng <code>thenReturn()</code> hoặc <code>thenThrow()</code>.</p>
+<ul>
+<li><code>thenReturn()</code> trả về kết quả</li>
+<li><code>thenThrow()</code> sẽ ném ra một ngoại lệ</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>when<span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>count</span><span style=color:#f92672>()).</span><span style=color:#a6e22e>thenReturn</span><span style=color:#f92672>(</span>100<span style=color:#f92672>);</span>
+</code></pre></div><p>Nếu muốn trả về nhiều kết quả cho nhiều lần gọi, chúng ta sử dụng <code>thenReturn()</code> nhiều lần như sau;</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>when<span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>count</span><span style=color:#f92672>())</span>
+  <span style=color:#f92672>.</span><span style=color:#a6e22e>thenReturn</span><span style=color:#f92672>(</span>50<span style=color:#f92672>)</span>
+  <span style=color:#f92672>.</span><span style=color:#a6e22e>thenReturn</span><span style=color:#f92672>(</span>100<span style=color:#f92672>)</span>
+  <span style=color:#f92672>.</span><span style=color:#a6e22e>thenReturn</span><span style=color:#f92672>(</span>200<span style=color:#f92672>);</span>
+
+<span style=color:#75715e>// Kết quả in ra màn hình sẽ là:
+</span><span style=color:#75715e></span>System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>count</span><span style=color:#f92672>());</span> <span style=color:#75715e>// 50
+</span><span style=color:#75715e></span>System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>count</span><span style=color:#f92672>());</span> <span style=color:#75715e>// 100
+</span><span style=color:#75715e></span>System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>count</span><span style=color:#f92672>());</span> <span style=color:#75715e>// 200
+</span></code></pre></div><h3 id=kiểm-chứng>Kiểm chứng</h3>
+<p>Chúng ta có thể kiểm tra xem phương thức/hàm có được gọi hay không qua phương thức <code>verify()</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>verify<span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>).</span><span style=color:#a6e22e>count</span><span style=color:#f92672>();</span>
+</code></pre></div><p>Mockito hỗ trợ những tham số giúp chúng ta có thể mở rộng khả năng kiểm chứng việc gọi phương thức như:</p>
+<ul>
+<li>Số lần gọi với <code>times()</code></li>
+<li>Thời gian thực hiện với <code>timeout()</code>, giúp kiểm chứng thời gian thực hiện thuật toán có đảm bảo yêu cầu</li>
+</ul>
+<p>Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>verify<span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>,</span> times<span style=color:#f92672>(</span>2<span style=color:#f92672>)).</span><span style=color:#a6e22e>count</span><span style=color:#f92672>();</span> 	<span style=color:#75715e>// gọi 2 lần
+</span><span style=color:#75715e></span>verify<span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>,</span> timeout<span style=color:#f92672>(</span>10<span style=color:#f92672>)).</span><span style=color:#a6e22e>count</span><span style=color:#f92672>();</span> <span style=color:#75715e>// 10 mili giây
+</span></code></pre></div><h3 id=kết-hợp-junit>Kết hợp JUnit</h3>
+<p>Đây là đoạn mã ví dụ cách kết hợp Mockito và JUnit để viết mã kiểm thử đơn vị:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>tryMockitoMock</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+  StockRepository stockRepository <span style=color:#f92672>=</span> mock<span style=color:#f92672>(</span>StockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+
+		when<span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>count</span><span style=color:#f92672>())</span>
+     <span style=color:#f92672>.</span><span style=color:#a6e22e>thenReturn</span><span style=color:#f92672>(</span>10<span style=color:#f92672>);</span>
+ 
+    <span style=color:#66d9ef>long</span> stockCount <span style=color:#f92672>=</span> stockRepository<span style=color:#f92672>.</span><span style=color:#a6e22e>count</span><span style=color:#f92672>();</span>
+  
+    Assertions<span style=color:#f92672>.</span><span style=color:#a6e22e>assertEquals</span><span style=color:#f92672>(</span>10<span style=color:#f92672>,</span> stockCount<span style=color:#f92672>);</span>
+    verify<span style=color:#f92672>(</span>stockRepository<span style=color:#f92672>).</span><span style=color:#a6e22e>count</span><span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>Ở phương thức trên, chúng ta mô phỏng hành vi lấy số lượng user thông qua phương thức <code>count()</code> được định nghĩa trong UserRepository. Khi <code>count()</code> được gọi, đối tượng mô phỏng sẽ trả về kết quả là <code>111</code> thay vì phải truy vấn vào cơ sở dữ liệu để lấy thông tin.</p>
+<h2 id=chặng-đường-tiếp-theo>Chặng đường tiếp theo</h2>
+<p>Cảm ơn bạn đã đồng hành cùng bài viết đến đây. Hy vọng những bước chân đầu tiên này sẽ mang lại nhiều ý nghĩa cho chặng đường học hỏi tiếp theo của bạn. Hãy tìm tòi và thực hành nhiều hơn để có thể làm chủ được kỹ năng Unit Test nói riêng và automation testing nói chung. Tới đây, chúng ta nên làm gì để học và thực hành hiệu quả hơn ở kỹ năng này?</p>
+<p>Câu châm ngôn của mình là &ldquo;Thế giới này thật là rộng lớn.. và có quá nhiều sách để đọc&rdquo;. Nên gợi ý đầu tiên luôn là đọc những đầu sách hay về Unit Test, Test-Driven Development và những chủ đề liên quan. Các bạn xem qua các gợi ý sách và website bên dưới nhé!</p>
+<h3 id=sách-nên-tham-khảo>Sách nên tham khảo</h3>
+<ul>
+<li>Test Driven Development: By Example - Tác giả: Kent Beck</li>
+<li>The Art of Unit Testing - Roy Osherove (Các ví dụ trong sách được viết vớt .NET nhưng vẫn có thể tham khảo để phát triển ứng dụng trên Java)</li>
+</ul>
+<h3 id=website-nên-tham-khảo>Website nên tham khảo</h3>
+<ul>
+<li>xUnit Patterns (<a href=http://xunitpatterns.com/>http://xunitpatterns.com/</a>)</li>
+</ul>
+</div>
+<div id=disqus_thread></div>
+<script type=text/javascript>(function(){var a,b;if(location.hostname==="localhost"||location.hostname==="127.0.0.1"||location.hostname==="")return;a=document.createElement('script'),a.type='text/javascript',a.async=!0,b='hoa-d',a.src='//'+b+'.disqus.com/embed.js',(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(a)})()</script>
+<noscript>
+Please enable JavaScript to view the
+<a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a>
+</noscript>
+<a href=http://disqus.com/ class=dsq-brlink>comments powered by
+<span class=logo-disqus>Disqus</span>
+</a>
+</article>
+</div>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','G-YLG1KEYLCC','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+<script defer src=https://use.fontawesome.com/releases/v5.12.1/js/all.js integrity=sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR crossorigin=anonymous></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.js></script>
+<script type=text/javascript>tocbot&&tocbot.init({tocSelector:'.toc',contentSelector:'.post',headingSelector:'h2, h3, h4',collapseDepth:4})</script>
+</body>
+</html>

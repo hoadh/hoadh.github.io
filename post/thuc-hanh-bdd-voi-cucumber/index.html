@@ -1,0 +1,310 @@
+<!doctype html><html lang=en-us>
+<head>
+<link href=https://gmpg.org/xfn/11 rel=profile>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name=generator content="Hugo 0.89.2">
+<title>Thực hành BDD với Cucumber • hoa.d</title>
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Thực hành BDD với Cucumber">
+<meta name=twitter:description content="Behavior-driven development (BDD) là một quy trình phát triển phần mềm Agile. Quy trình này khuyến khích cộng tác giữa các vai trò kỹ-thuật (như QA, lập trình viên,&mldr;) với những vai trò phi-kỹ thuật (như chuyên gia lĩnh vực, người dùng,&mldr;) để chia sẻ một cách hiểu chung về những tính năng cần làm trong dự án.
+Để áp dụng BDD vào nhóm dự án, bên cạnh việc thực hành quy trình nhuần nhuyễn giữa các vai thì nghiên cứu sử dụng công cụ hỗ trợ cũng là một việc làm không thể thiếu.">
+<meta property="og:title" content="Thực hành BDD với Cucumber">
+<meta property="og:description" content="Behavior-driven development (BDD) là một quy trình phát triển phần mềm Agile. Quy trình này khuyến khích cộng tác giữa các vai trò kỹ-thuật (như QA, lập trình viên,&mldr;) với những vai trò phi-kỹ thuật (như chuyên gia lĩnh vực, người dùng,&mldr;) để chia sẻ một cách hiểu chung về những tính năng cần làm trong dự án.
+Để áp dụng BDD vào nhóm dự án, bên cạnh việc thực hành quy trình nhuần nhuyễn giữa các vai thì nghiên cứu sử dụng công cụ hỗ trợ cũng là một việc làm không thể thiếu.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://hoadh.github.io/post/thuc-hanh-bdd-voi-cucumber/"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2020-07-15T03:19:07+07:00">
+<meta property="article:modified_time" content="2020-07-15T03:19:07+07:00">
+<link rel=stylesheet href=/scss/hyde-hyde.3081c4981fb69a2783dd36ecfdd0e6ba7a158d4cbfdd290ebce8f78ba0469fc6.css integrity="sha256-MIHEmB+2mieD3Tbs/dDmunoVjUy/3SkOvOj3i6BGn8Y=">
+<link rel=stylesheet href=/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58+TzH3icCkSHGoJ+ed7w=" media=print>
+<link rel=stylesheet href=/scss/tocbot.5ef07cebc3c477b54270456f149ee02922479bb7555fd344b2c69f953b0e7e5e.css integrity="sha256-XvB868PEd7VCcEVvFJ7gKSJHm7dVX9NEssaflTsOfl4="><!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js></script>
+<script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]-->
+<link rel=apple-touch-icon-precomposed sizes=144x144 href=/apple-touch-icon-144-precomposed.png>
+<link rel="shortcut icon" href=/favicon.png>
+<link rel=stylesheet href=https://hoadh.github.io/css/custom.css>
+</head>
+<body>
+<div class=sidebar>
+<div class=container>
+<div class=sidebar-about>
+<span class=site__title>
+<a href=https://hoadh.github.io/>
+hoa.d
+</a>
+</span>
+<p class=site__description>
+a simple man who loves reading his mind "on-the-fly".
+</p>
+</div>
+<div class=collapsible-menu>
+<input type=checkbox id=menuToggle>
+<label for=menuToggle>hoa.d</label>
+<div class=menu-content>
+<div>
+<ul class=sidebar-nav>
+</ul>
+</div>
+<section class=social>
+<a href=https://facebook.com/hoadng rel=me><i class="fab fa-facebook-f"></i></a>
+<a href=https://github.com/hoadh rel=me><i class="fab fa-github fa-lg" aria-hidden=true></i></a>
+<a href=https://linkedin.com/in/hoad rel=me><i class="fab fa-linkedin fa-lg" aria-hidden=true></i></a>
+<a href=https://t.me/hoadang rel=me><i class="fab fa-telegram fa-lg" aria-hidden=true></i></a>
+</section>
+</div>
+</div>
+<div class=copyright>
+&copy; 2021 hoadh.github.io
+</div>
+</div>
+</div>
+<div class="content container">
+<article>
+<header>
+<h1>Thực hành BDD với Cucumber</h1>
+<div class=post__meta>
+<i class="fas fa-calendar-alt"></i> Jul 15, 2020
+<br>
+<i class="fas fa-clock"></i> 11 min read
+</div>
+</header>
+<div class=toc-wrapper>
+<input type=checkbox id=tocToggle>
+<label for=tocToggle>Table of Content</label>
+<div class=toc id=TableOfContents></div>
+</div>
+<div class=post>
+<p>Behavior-driven development (BDD) là một quy trình phát triển phần mềm Agile. Quy trình này khuyến khích cộng tác giữa các vai trò kỹ-thuật (như QA, lập trình viên,&mldr;) với những vai trò phi-kỹ thuật (như chuyên gia lĩnh vực, người dùng,&mldr;) để chia sẻ một cách hiểu chung về những tính năng cần làm trong dự án.</p>
+<p>Để áp dụng BDD vào nhóm dự án, bên cạnh việc thực hành quy trình nhuần nhuyễn giữa các vai thì nghiên cứu sử dụng công cụ hỗ trợ cũng là một việc làm không thể thiếu. Trong phạm vi bài viết này, chúng ta sẽ tìm hiểu về Cucumber - một trong số những công cụ như thế.</p>
+<p>Bài viết sẽ có những nội dung chính sau:</p>
+<ul>
+<li>Viết kịch bản với cú pháp Gherkin</li>
+<li>Định nghĩa thao tác thực thi với ngôn ngữ JavaScript</li>
+<li>Tự động hoá kiểm thử giao diện với Selenium WebDriver</li>
+</ul>
+<h2 id=tổng-quan>Tổng quan</h2>
+<p>Cucumber là một framework hỗ trợ xây dựng các đặc tả với ngôn ngữ tự nhiên và hướng nghiệp vụ - Giúp các thành viên có vai trò như QA, BA, Tester, chuyên gia ngành,&mldr; có thể dễ dàng viết và cộng tác cùng các thành viên có vai trò xây dựng hệ thống.</p>
+<p>Cucumber hỗ trợ nhiều nền tảng công nghệ khác nhau như Java, JavaScript, C#, Ruby, C++,&mldr; Vì vậy, nó có thể tích hợp được vào hầu hết các dự án hiện đại.</p>
+<p>Việc triển khai các kịch bản kiểm thử với Cucumber được thực hiện gồm 2 phần:</p>
+<ol>
+<li>QA (hoặc chuyên gia ngành) định nghĩa các kịch bản kiểm thử bằng ngôn ngữ tự nhiên với cú pháp <strong>Gherkin</strong>. Từ đó các kịch bản kiểm thử được thể hiện thông qua một tập hợp tuần tự các mệnh đề (sẽ được mô tả chi tiết trong mục <strong>Cú pháp Gherkin</strong>).</li>
+<li>Cách mệnh đề trong kịch bản kiểm thử sau khi được định nghĩa bằng <strong>Gherkin</strong> sẽ được cài đặt bằng các đoạn mã bằng ngôn ngữ lập trìng tương ứng phù hợp với nền tảng của ứng dụng (xem mục <strong>Định nghĩa thao tác</strong>).</li>
+</ol>
+<h2 id=cú-pháp-gherkin>Cú pháp Gherkin</h2>
+<p>Cú pháp Gherkin bao gồm những thành phần sau:</p>
+<ul>
+<li>Feature</li>
+<li>Scenario</li>
+<li>Step</li>
+</ul>
+<h3 id=feature-tính-năng>Feature (Tính năng)</h3>
+<p>Thành phần cơ bản trong một dự án là đặc tả tính năng. Các đặc tả này được viết vào một tập tin có đuôi <code>.feature</code> với cú pháp <code>Gherkin</code>.</p>
+<p>Dòng đầu tiên của file sẽ bắt đầu với từ khoá <code>Feature: </code> và theo sau bởi dòng lùi vào. Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gherkin data-lang=gherkin><span style=color:#66d9ef>Feature:</span><span style=color:#a6e22e> Là người bận rộn, tôi muốn thêm việc cần làm vào danh sách công việc để lập kế hoạch hằng ngày
+</span></code></pre></div><p>Mỗi feature sẽ bao gồm danh sách các kịch bản kiểm thử liên quan. Các kịch bản này được gọi là <code>scenario</code>.</p>
+<h3 id=scenario-kịch-bản>Scenario (Kịch bản)</h3>
+<p>Kịch bản là nội dung nòng cốt trong cú pháp Gherkin. Đây là nơi đặc tả các thao tác kiểm thử cho một ca kiểm thử.</p>
+<p>Kịch bản sẽ được viết bắt đầu với từ khoá <code>Scenario: </code>, theo sau là một nội dung tuỳ ý - có thể mô tả rõ ràng nội dung muốn kiểm thử. Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gherkin data-lang=gherkin><span style=color:#a6e22e>  </span><span style=color:#66d9ef>Scenario:</span><span style=color:#a6e22e> Thêm một việc cần làm vào danh sách
+</span></code></pre></div><p>Mỗi kịch bản sẽ có nhiều mệnh đề (chúng ta gọi là <code>Step</code>) cùng với các dữ liệu cụ thể thể (được gọi là <code>Example</code>). Các mệnh đề và dữ liệu này thường được thu thập từ các yêu cầu sử dụng và mô tả có thể mô tả lại bằng ngôn ngữ tự nhiên.</p>
+<h3 id=step-mệnh-đề>Step (Mệnh đề)</h3>
+<p>Mệnh đề những câu mô tả rõ các thao tác thực thi. Các mệnh đề được viết theo sau các từ khoá <code>Given</code>, <code>When</code>, <code>Then</code>.</p>
+<ul>
+<li><code>Given</code> được sử dụng để mô tả trạng thái ban đầu của hệ thống (hoặc chức năng). Mục đích của <code>Given</code> là để cung cấp các điều kiện cần thiết trước khi thực hiện các tương tác chính vào hệ thống.</li>
+<li><code>When</code> là từ khoá mô tả sự kiện, hành vi, hoặc tương tác chính của tác nhân lên hệ thống.</li>
+<li><code>Then</code> được sử dụng để mô tả kết quả mong muốn cuối cùng.</li>
+<li>Bên cạnh đó, chúng ta có thể sử dụng <code>And</code>, <code>But</code>, hoặc <code>*</code> để kết nối mệnh đề có liên quan.</li>
+</ul>
+<p>Hãy xem qua ví dụ sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gherkin data-lang=gherkin><span style=color:#66d9ef>Scenario:</span><span style=color:#a6e22e> Thêm một việc cần làm vào danh sách
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>    Given </span><span style=color:#a6e22e>Danh sách việc cần làm ban đầu rỗng
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>When </span><span style=color:#a6e22e>Thêm việc &#39;Viết bài hướng dẫn Cucumber&#39; vào danh sách
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>Then </span><span style=color:#a6e22e>Danh sách việc cần làm sẽ có &#39;Viết bài hướng dẫn Cucumber&#39;
+</span></code></pre></div><p>Các mệnh đề sẽ được định nghĩa với các các mã lệnh kiểm thử dựa trên một ngôn ngữ lập trình cụ thể. Vì trên thực thế, Cucumber không tự biết làm thế nào để thực thi các tính năng, kịch bản để mô tả.</p>
+<p>Khi Cucumber thực hiện các mệnh đề trong kịch bản, nó sẽ tìm các <code>Định nghĩa thao tác</code> (Step definitions) phù hợp để thực thi.</p>
+<h3 id=background-bối-cảnh>Background (Bối cảnh)</h3>
+<p><code>Background</code> là từ khoá cho phép thêm ngữ cảnh vào các kịch bản trong một tính năng. Nội dung bối cảnh sẽ được viết giống kịch bản, có thể có các mệnh đề nhưng không có tiêu đề.</p>
+<p>Về thứ tực thực hiện, một bối cảnh sẽ được thực hiện trước mỗi kịch bản (và lặp lại nếu có nhiều kịch bản trong một tính năng).</p>
+<p>Ví dụ, một số tính năng yêu cầu thực hiện đăng nhập vào hệ thống thì mới có thể thực hiện. Chúng ta sẽ đưa thao tác đăng nhập này vào mục bối cảnh như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gherkin data-lang=gherkin><span style=color:#66d9ef>Feature:</span><span style=color:#a6e22e> ...
+</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>Background:</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>  Given </span><span style=color:#a6e22e>Truy cập trang quản lý của hệ thống
+</span><span style=color:#a6e22e>  </span><span style=color:#66d9ef>And </span><span style=color:#a6e22e>Đăng nhập vào hệ thống
+</span></code></pre></div><h3 id=ví-dụ-hoàn-chỉnh>Ví dụ hoàn chỉnh</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gherkin data-lang=gherkin><span style=color:#66d9ef>Feature:</span><span style=color:#a6e22e> Là người bận rộn, tôi muốn thêm việc cần làm vào danh sách công việc để lập kế hoạch hằng ngày
+</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e>  </span><span style=color:#66d9ef>Background:</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>    Given </span><span style=color:#a6e22e>Mở ứng dụng Todos List
+</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e>  </span><span style=color:#66d9ef>Scenario:</span><span style=color:#a6e22e> Thêm một việc cần làm vào danh sách
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>    Given </span><span style=color:#a6e22e>Danh sách việc cần làm ban đầu rỗng
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>When </span><span style=color:#a6e22e>Thêm việc &#39;Viết bài hướng dẫn Cucumber&#39; vào danh sách
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>Then </span><span style=color:#a6e22e>Danh sách việc cần làm sẽ có &#39;Viết bài hướng dẫn Cucumber&#39;
+</span></code></pre></div><p>Chúng ta đã viết đặc tả một tính năng cơ bản trong ứng dụng <strong>Todos List</strong>. Đây là ứng dụng quản lý danh sách công việc cần làm mỗi ngày. Người dùng có thể <code>thêm</code>, <code>sửa</code>, <code>xoá</code>, <code>cập nhật hoàn thành</code> các công việc hằng ngày. Chúng ta sẽ sử dụng các tính năng này trong các phần tiếp theo của bài viết:</p>
+<ul>
+<li>Link để truy cập ứng dụng là <a href=https://cg-todo-list-demo.netlify.app/>https://cg-todo-list-demo.netlify.app/</a></li>
+<li>Mã nguồn ứng dụng được tham khảo và sao chép từ bài viết <a href=https://freshman.tech/todo-list/>https://freshman.tech/todo-list/</a></li>
+</ul>
+<h2 id=định-nghĩa-thao-tác-javascript>Định nghĩa thao tác (JavaScript)</h2>
+<p>Chúng ta có thể bắt đầu sử dụng Cucumber với JavaScript qua hệ sinh thái Nodejs.</p>
+<h3 id=bước-1---cài-đặt>Bước 1 - Cài đặt</h3>
+<p>Tạo dự án Nodejs mới và cài đặt các gói cần thiết:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir automation_testing_project
+cd automation_testing_project
+npm init
+npm install cucumber chai selenium-webdriver chromedriver --save
+</code></pre></div><p>Mở file <code>package.json</code> và copy mã dưới đây để thực thi kịch bản trong Cucumber:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=color:#960050;background-color:#1e0010>...</span>
+<span style=color:#e6db74>&#34;scripts&#34;</span><span style=color:#960050;background-color:#1e0010>:</span> {
+	<span style=color:#f92672>&#34;test&#34;</span>: <span style=color:#e6db74>&#34;./node_modules/.bin/cucumber-js features/*.feature -r step_definitions -r support&#34;</span>
+}<span style=color:#960050;background-color:#1e0010>,</span>
+<span style=color:#960050;background-color:#1e0010>...</span>
+</code></pre></div><p>Tiếp tục, chạy lệnh sau để kiểm tra kết quả:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>npm test
+</code></pre></div><p>Nếu kết quả hiển thị như sau là cài đặt thành công:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#ae81ff>0</span> scenarios
+<span style=color:#ae81ff>0</span> steps
+0m00.000s
+</code></pre></div><h3 id=bước-2---viết-kịch-bản-với-gherkin>Bước 2 - Viết kịch bản với Gherkin</h3>
+<p>Tạo thư mục <code>features</code> trong dự án. Sau đó tạo file <code>add_todo.feature</code> với nội dung như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gherkin data-lang=gherkin><span style=color:#66d9ef>Feature:</span><span style=color:#a6e22e> Là người bận rộn, tôi muốn thêm việc cần làm vào danh sách công việc để lập kế hoạch hằng ngày
+</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e>  </span><span style=color:#66d9ef>Background:</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>    Given </span><span style=color:#a6e22e>Mở ứng dụng Todos List
+</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e>  </span><span style=color:#66d9ef>Scenario:</span><span style=color:#a6e22e> Thêm một việc cần làm vào danh sách
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>    Given </span><span style=color:#a6e22e>Danh sách việc cần làm ban đầu rỗng
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>When </span><span style=color:#a6e22e>Thêm việc &#39;Viết bài hướng dẫn Cucumber&#39; vào danh sách
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>Then </span><span style=color:#a6e22e>Danh sách việc cần làm sẽ có &#39;Viết bài hướng dẫn Cucumber&#39;
+</span></code></pre></div><p>Mở Terminal và thực thi lệnh <code>npm test</code>, kết quả trên terminal sẽ trả về như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Warnings:
+
+1<span style=color:#f92672>)</span> Scenario: Thêm một việc cần làm vào danh sách <span style=color:#75715e># features/add_todo.feature:6</span>
+   ? Given Mở ứng dụng Todos List
+       Undefined. Implement with the following snippet:
+
+         Given<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;Mở ứng dụng Todos List&#39;</span>, <span style=color:#66d9ef>function</span> <span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+           // Write code here that turns the phrase above into concrete actions
+           <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;pending&#39;</span>;
+         <span style=color:#f92672>})</span>;
+<span style=color:#75715e>#....</span>
+<span style=color:#75715e>#.... kết quả khá dài nên mình đã ẩn bớt đi</span>
+<span style=color:#75715e>#....</span>
+
+<span style=color:#ae81ff>1</span> scenario <span style=color:#f92672>(</span><span style=color:#ae81ff>1</span> undefined<span style=color:#f92672>)</span>
+<span style=color:#ae81ff>4</span> steps <span style=color:#f92672>(</span><span style=color:#ae81ff>4</span> undefined<span style=color:#f92672>)</span>
+0m00.000s
+npm ERR! Test failed.  See above <span style=color:#66d9ef>for</span> more details.
+</code></pre></div><p>Kết quả việc thực hiện kịch bản trên là <code>failed</code> vì chúng ta chưa định nghĩa thao tác để tương tác với ứng dụng.</p>
+<h3 id=bước-3---định-nghĩa-thao-tác>Bước 3 - Định nghĩa thao tác</h3>
+<p>Ở bước này, chúng ta sẽ cùng nhau cài đặt các thao tác mô phỏng hành vi người dùng trên ứng dụng web như: <em>gõ phím, click vào button, kiểm tra text,&mldr;</em> qua một framework có tên là <strong>Selenium WebDriver</strong>.</p>
+<h4 id=cấu-hình-selenium-webdriver>Cấu hình Selenium WebDriver</h4>
+<p>Tạo thư mục <code>support</code> và file <code>world.js</code> bên trong với nội dung như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>seleniumWebdriver</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;selenium-webdriver&#39;</span>);
+<span style=color:#66d9ef>const</span> { <span style=color:#a6e22e>setWorldConstructor</span> } <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;cucumber&#39;</span>);
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CustomWorld</span> {
+  <span style=color:#a6e22e>constructor</span>() {
+    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>driver</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>seleniumWebdriver</span>.<span style=color:#a6e22e>Builder</span>()
+    .<span style=color:#a6e22e>forBrowser</span>(<span style=color:#e6db74>&#39;chrome&#39;</span>)
+    .<span style=color:#a6e22e>build</span>()
+    
+    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>waitForElement</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>function</span>(<span style=color:#a6e22e>locator</span>) {
+      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>condition</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>seleniumWebdriver</span>.<span style=color:#a6e22e>until</span>.<span style=color:#a6e22e>elementLocated</span>(<span style=color:#a6e22e>locator</span>)
+      <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>driver</span>.<span style=color:#a6e22e>wait</span>(<span style=color:#a6e22e>condition</span>)
+    }
+  }
+}
+
+<span style=color:#a6e22e>setWorldConstructor</span>(<span style=color:#a6e22e>CustomWorld</span>);
+</code></pre></div><h4 id=bổ-sung-định-nghĩa>Bổ sung định nghĩa</h4>
+<p>Tạo thư mục <code>step_definitions</code> tại thư mục gốc của dự án. Tạo file <code>add_todo.js</code> với nội dung lần lượt theo kịch bản ở file <code>add_todo.feature</code>.</p>
+<p>Trước tiên, chúng ta phải import các thư viện cần thiết:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>const</span> { <span style=color:#a6e22e>Given</span>, <span style=color:#a6e22e>When</span>, <span style=color:#a6e22e>Then</span>, <span style=color:#a6e22e>After</span> } <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;cucumber&#39;</span>);
+<span style=color:#66d9ef>const</span> { <span style=color:#a6e22e>Key</span> } <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;selenium-webdriver&#39;</span>);
+<span style=color:#66d9ef>const</span> { <span style=color:#a6e22e>expect</span> } <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;chai&#39;</span>);
+</code></pre></div><p>Với mệnh đề <code>Given Mở ứng dụng Todos List</code>, chúng ta định nghĩa như sau để thư viện <strong>Selenium WebDriver</strong> có thể khởi động trình duyệt và truy cập link ứng dụng:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>Given</span>(<span style=color:#e6db74>&#39;Mở ứng dụng Todos List&#39;</span>, <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>function</span> () {
+  <span style=color:#66d9ef>await</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>driver</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#39;https://cg-todo-list-demo.netlify.app/&#39;</span>);
+});
+</code></pre></div><p>Mệnh đề <code>Given Danh sách việc cần làm ban đầu rỗng</code> được định nghĩa với các dòng dưới đây. Chúng ta sẽ sử dụng <code>expect</code> thuộc thư viện <code>chai</code> để kiểm tra kết quả thực tế hiển thị trên ứng dụng với mong đợi. Mong muốn của chúng ta là: <em>ở lần đầu tiên truy cập, danh sách công việc phải rỗng (chưa có công việc nào)</em>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>Given</span>(<span style=color:#e6db74>&#39;Danh sách việc cần làm ban đầu rỗng&#39;</span>, <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>function</span> () {
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>todolist</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>driver</span>.<span style=color:#a6e22e>findElement</span>({<span style=color:#a6e22e>css</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;.todo-list&#39;</span>});
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>items</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>todolist</span>.<span style=color:#a6e22e>findElements</span>({<span style=color:#a6e22e>css</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;li&#39;</span>});
+  <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>items</span>).<span style=color:#a6e22e>to</span>.<span style=color:#a6e22e>have</span>.<span style=color:#a6e22e>lengthOf</span>(<span style=color:#ae81ff>0</span>);
+});
+</code></pre></div><p>Dưới đây là mệnh đề <code>When Thêm việc 'Viết bài hướng dẫn Cucumber' vào danh sách</code>. Để thao tác này có thể được tái sử dụng ở kịch bản khác, chúng ta khai báo tham số <code>{string}</code> với tên công việc.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>When</span>(<span style=color:#e6db74>&#39;Thêm việc {string} vào danh sách&#39;</span>, <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>function</span> (<span style=color:#a6e22e>todoText</span>) {
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>todoInput</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>driver</span>.<span style=color:#a6e22e>findElement</span>({<span style=color:#a6e22e>css</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;.js-todo-input&#39;</span>});
+  <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>todoInput</span>.<span style=color:#a6e22e>sendKeys</span>(<span style=color:#a6e22e>todoText</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>Key</span>.<span style=color:#a6e22e>ENTER</span>);
+});
+</code></pre></div><p>Cuối cùng, định nghĩa mệnh đề <code>Then Danh sách việc cần làm sẽ có 'Viết bài hướng dẫn Cucumber'</code> như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>Then</span>(<span style=color:#e6db74>&#39;Danh sách việc cần làm sẽ có {string}&#39;</span>, <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>function</span> (<span style=color:#a6e22e>todoText</span>) {
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>todolist</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>driver</span>.<span style=color:#a6e22e>findElement</span>({<span style=color:#a6e22e>css</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;.todo-list&#39;</span>});
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>items</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>todolist</span>.<span style=color:#a6e22e>findElements</span>({<span style=color:#a6e22e>css</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;li&#39;</span>});
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>todo</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>items</span>[<span style=color:#ae81ff>0</span>].<span style=color:#a6e22e>getText</span>();
+  <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>items</span>).<span style=color:#a6e22e>to</span>.<span style=color:#a6e22e>have</span>.<span style=color:#a6e22e>lengthOf</span>(<span style=color:#ae81ff>1</span>);
+  <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>todo</span>).<span style=color:#a6e22e>to</span>.<span style=color:#a6e22e>equal</span>(<span style=color:#a6e22e>todoText</span>);
+});
+</code></pre></div><p>Sau khi thực hiện sau kịch bản, nếu muốn trình duyệt tự động tắt đi thì chúng ta có thể sử dụng <code>After</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>After</span>(<span style=color:#66d9ef>async</span> <span style=color:#66d9ef>function</span>() {
+  <span style=color:#66d9ef>await</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>driver</span>.<span style=color:#a6e22e>close</span>();
+});
+</code></pre></div><p>Có một lưu ý nhỏ khi cài đặt các định nghĩa thao tác trên JavaScript. Các thao tác của chúng ta được Selenium WebDriver thực hiện bất đồng bộ và kết quả trả về là <code>Promise</code>. Vì vậy, để mã nguồn dễ đọc, chúng ta nên sử dụng async/await như các ví dụ ở trên.</p>
+<p>Bạn có thể tham khảo lại mã nguồn tại đây: <a href=https://github.com/hoadh/demo-todo-list-cucumber-js>https://github.com/hoadh/demo-todo-list-cucumber-js</a></p>
+<h2 id=kinh-nghiệm-triển-khai>Kinh nghiệm triển khai</h2>
+<h3 id=kịch-bản-tránh-phụ-thuộc-ui>Kịch bản tránh phụ thuộc UI</h3>
+<p>Ví dụ không tốt:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gherkin data-lang=gherkin><span style=color:#75715e># BAD EXAMPLE! Do not copy.</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>Feature:</span><span style=color:#a6e22e> Google Searching
+</span><span style=color:#a6e22e>
+</span><span style=color:#a6e22e>  </span><span style=color:#66d9ef>Scenario:</span><span style=color:#a6e22e> Google Image search shows pictures
+</span><span style=color:#a6e22e></span><span style=color:#66d9ef>    Given </span><span style=color:#a6e22e>the user opens a web browser
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>And </span><span style=color:#a6e22e>the user navigates to &#34;</span><span style=color:#e6db74>https://www.google.com/</span><span style=color:#a6e22e>&#34;
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>When </span><span style=color:#a6e22e>the user enters &#34;</span><span style=color:#e6db74>panda</span><span style=color:#a6e22e>&#34; into the search bar
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>Then </span><span style=color:#a6e22e>links related to &#34;</span><span style=color:#e6db74>panda</span><span style=color:#a6e22e>&#34; are shown on the results page
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>When </span><span style=color:#a6e22e>the user clicks on the &#34;</span><span style=color:#e6db74>Images</span><span style=color:#a6e22e>&#34; link at the top of the results page
+</span><span style=color:#a6e22e>    </span><span style=color:#66d9ef>Then </span><span style=color:#a6e22e>images related to &#34;</span><span style=color:#e6db74>panda</span><span style=color:#a6e22e>&#34; are shown on the results page
+</span><span style=color:#a6e22e></span><span style=color:#75715e>    
+</span><span style=color:#75715e># Nguồn: https://automationpanda.com/2017/01/30/bdd-101-writing-good-gherkin/</span><span style=color:#a6e22e>
+</span></code></pre></div><p>Với tình huống trên, khi lập trình viên thay đổi mã giao diện (&ldquo;Images&rdquo; link) thì đặc tả kịch bản phải cập nhật lại. Vì vậy, để viết kịch bản thì chúng ta nên sử dụng ngôn ngữ hướng người dùng, đặc tả ở mức cao (high-level), tránh quá chi tiết và phụ thuộc vào thành phần giao diện như ví dụ trên.</p>
+<h3 id=áp-dụng-page-object-model>Áp dụng Page Object Model</h3>
+<p>Page Object Model (POM) là một design pattern phổ biến trong Automation testing. Việc sử dụng POM đảm bảo tính tổ chức và tái sử dụng mã kiểm thử, nhờ đó mã nguồn dễ mở rộng và dễ bảo trì hơn.</p>
+<p>Thay vì truy cập trực tiếp các DOM thông qua WebDriver như đã làm ở các ví dụ trên, chúng ta tạo các class bao đóng thành phần giao diện bên trong. Vì thế:</p>
+<ul>
+<li>Thay đổi trong giao diện không ảnh hưởng quá nhiều đến định nghĩa thao tác</li>
+<li>Có thể tái sử dụng giao diện khi có kịch bản mới</li>
+<li>Các trang phức tạp có thể được cấu trúc thành nhiều page object nhỏ hơn</li>
+</ul>
+<p>Bạn có thể tham khảo mã nguồn được refactor theo POM tại đây: <a href=https://github.com/hoadh/demo-todo-list-cucumber-js/tree/refactor>https://github.com/hoadh/demo-todo-list-cucumber-js/tree/refactor</a></p>
+<h2 id=chặng-đường-tiếp-theo>Chặng đường tiếp theo</h2>
+<p>Cảm ơn bạn đã đồng hành cùng bài viết đến đây. Hy vọng nội dung bài viết này có thể giúp bạn có được cái nhìn tổng quan về áp dụng BDD với Cucumber.</p>
+<p>Tiếp theo, để tăng thêm hiểu biết về BDD và Cucumber, tác giả bài viết gợi ý một số tài nguyên dưới đây:</p>
+<ul>
+<li>Cucumber School: <a href=https://cucumber.io/school/>https://cucumber.io/school/</a></li>
+<li>Tài liệu Cucumber framework <a href=https://cucumber.io/docs/guides/>https://cucumber.io/docs/guides/</a></li>
+<li>Cú pháp Gherkin <a href=https://cucumber.io/docs/gherkin/>https://cucumber.io/docs/gherkin/</a></li>
+<li>Thư viện Chaijs <a href=https://www.chaijs.com/>https://www.chaijs.com/</a></li>
+<li>Tài liệu sử dụng Selenium WebDriver: <a href=https://www.selenium.dev/documentation/en/>https://www.selenium.dev/documentation/en/</a></li>
+</ul>
+</div>
+<div id=disqus_thread></div>
+<script type=text/javascript>(function(){var a,b;if(location.hostname==="localhost"||location.hostname==="127.0.0.1"||location.hostname==="")return;a=document.createElement('script'),a.type='text/javascript',a.async=!0,b='hoa-d',a.src='//'+b+'.disqus.com/embed.js',(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(a)})()</script>
+<noscript>
+Please enable JavaScript to view the
+<a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a>
+</noscript>
+<a href=http://disqus.com/ class=dsq-brlink>comments powered by
+<span class=logo-disqus>Disqus</span>
+</a>
+</article>
+</div>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','G-YLG1KEYLCC','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+<script defer src=https://use.fontawesome.com/releases/v5.12.1/js/all.js integrity=sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR crossorigin=anonymous></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.js></script>
+<script type=text/javascript>tocbot&&tocbot.init({tocSelector:'.toc',contentSelector:'.post',headingSelector:'h2, h3, h4',collapseDepth:4})</script>
+</body>
+</html>

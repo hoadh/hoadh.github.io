@@ -1,0 +1,144 @@
+<!doctype html><html lang=en-us>
+<head>
+<link href=https://gmpg.org/xfn/11 rel=profile>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name=generator content="Hugo 0.89.2">
+<title>Khắc phục lỗi certificate bị thu hồi (Caddy server) • hoa.d</title>
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Khắc phục lỗi certificate bị thu hồi (Caddy server)">
+<meta name=twitter:description content="Trong số những dự án mà mình thực hiện, có một vài dự án sử dụng Caddy làm load balencer. Ưu điểm của Caddy là cấu hình dễ nhớ, xử lý khá tối ưu và yêu cầu cấu hình hạ tầng không quá cao. Nhờ thế mà tiết kiệm được chi phí vận hành hệ thống.
+Vấn đề Vào một ngày đẹp trời, mình truy cập vào hệ thống thì nhận được thông báo certificate bị thu hồi.">
+<meta property="og:title" content="Khắc phục lỗi certificate bị thu hồi (Caddy server)">
+<meta property="og:description" content="Trong số những dự án mà mình thực hiện, có một vài dự án sử dụng Caddy làm load balencer. Ưu điểm của Caddy là cấu hình dễ nhớ, xử lý khá tối ưu và yêu cầu cấu hình hạ tầng không quá cao. Nhờ thế mà tiết kiệm được chi phí vận hành hệ thống.
+Vấn đề Vào một ngày đẹp trời, mình truy cập vào hệ thống thì nhận được thông báo certificate bị thu hồi.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://hoadh.github.io/post/khac-phuc-loi-certificate-bi-thu-hoi/"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2021-06-13T15:44:17+07:00">
+<meta property="article:modified_time" content="2021-06-13T15:44:17+07:00">
+<link rel=stylesheet href=/scss/hyde-hyde.3081c4981fb69a2783dd36ecfdd0e6ba7a158d4cbfdd290ebce8f78ba0469fc6.css integrity="sha256-MIHEmB+2mieD3Tbs/dDmunoVjUy/3SkOvOj3i6BGn8Y=">
+<link rel=stylesheet href=/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58+TzH3icCkSHGoJ+ed7w=" media=print>
+<link rel=stylesheet href=/scss/tocbot.5ef07cebc3c477b54270456f149ee02922479bb7555fd344b2c69f953b0e7e5e.css integrity="sha256-XvB868PEd7VCcEVvFJ7gKSJHm7dVX9NEssaflTsOfl4="><!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js></script>
+<script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]-->
+<link rel=apple-touch-icon-precomposed sizes=144x144 href=/apple-touch-icon-144-precomposed.png>
+<link rel="shortcut icon" href=/favicon.png>
+<link rel=stylesheet href=https://hoadh.github.io/css/custom.css>
+</head>
+<body>
+<div class=sidebar>
+<div class=container>
+<div class=sidebar-about>
+<span class=site__title>
+<a href=https://hoadh.github.io/>
+hoa.d
+</a>
+</span>
+<p class=site__description>
+a simple man who loves reading his mind "on-the-fly".
+</p>
+</div>
+<div class=collapsible-menu>
+<input type=checkbox id=menuToggle>
+<label for=menuToggle>hoa.d</label>
+<div class=menu-content>
+<div>
+<ul class=sidebar-nav>
+</ul>
+</div>
+<section class=social>
+<a href=https://facebook.com/hoadng rel=me><i class="fab fa-facebook-f"></i></a>
+<a href=https://github.com/hoadh rel=me><i class="fab fa-github fa-lg" aria-hidden=true></i></a>
+<a href=https://linkedin.com/in/hoad rel=me><i class="fab fa-linkedin fa-lg" aria-hidden=true></i></a>
+<a href=https://t.me/hoadang rel=me><i class="fab fa-telegram fa-lg" aria-hidden=true></i></a>
+</section>
+</div>
+</div>
+<div class=copyright>
+&copy; 2021 hoadh.github.io
+</div>
+</div>
+</div>
+<div class="content container">
+<article>
+<header>
+<h1>Khắc phục lỗi certificate bị thu hồi (Caddy server)</h1>
+<div class=post__meta>
+<i class="fas fa-calendar-alt"></i> Jun 13, 2021
+<br>
+<i class="fas fa-tags"></i>
+<a class="badge badge-tag" href=/tags/caddy>caddy</a>
+<a class="badge badge-tag" href=/tags/tls>tls</a>
+<a class="badge badge-tag" href=/tags/certificate>certificate</a>
+<br>
+<i class="fas fa-clock"></i> 4 min read
+</div>
+</header>
+<div class=toc-wrapper>
+<input type=checkbox id=tocToggle>
+<label for=tocToggle>Table of Content</label>
+<div class=toc id=TableOfContents></div>
+</div>
+<div class=post>
+<p>Trong số những dự án mà mình thực hiện, có một vài dự án sử dụng Caddy làm load balencer. Ưu điểm của Caddy là cấu hình dễ nhớ, xử lý khá tối ưu và yêu cầu cấu hình hạ tầng không quá cao. Nhờ thế mà tiết kiệm được chi phí vận hành hệ thống.</p>
+<h2 id=vấn-đề>Vấn đề</h2>
+<p>Vào một ngày đẹp trời, mình truy cập vào hệ thống thì nhận được thông báo certificate bị thu hồi.</p>
+<p><img src=/_img/image-20210613093327282.png alt=image-20210613093327282></p>
+<p>Kiểm tra ngày hết hạn thì thấy rằng vẫn còn hơn hai tháng nữa mới phải làm mới (renewal). Kiểm tra trạng thái trên trang cung cấp thông tin chứng chỉ thì trạng thái hiển thị &ldquo;Revoked&rdquo; (Chính xác là đã bị thu hồi).</p>
+<p><img src=/_img/image-20210613093631490.png alt=image-20210613093631490></p>
+<p>Tìm các nguyên nhân gây ra vấn đề trên thì chỉ nhận được một số thông tin rất chung chung. Trích nguyên văn một đoạn trong bài viết <a href=https://blog.keyfactor.com/certificate-revocation-list-crl-ocsp>What is a Certificate Revocation List (CRL) vs OCSP?</a>:</p>
+<ul>
+<li>The CA discovers it has improperly and wrongfully issued a certificate</li>
+<li>A certificate is believed or is discovered to be fraudulent</li>
+<li>A certificate&rsquo;s private key has been compromised</li>
+<li>The issuing CA has been compromised</li>
+<li>The web site owner ceases doing business and no longer owns the domain name or the server defined in the certificate</li>
+<li>During the web site authentication and validation the requester misrepresents some information used in the process, or the web site owner has violated the terms of its agreement with the CA</li>
+</ul>
+<p>Ok. Biết tạm vậy đã. Giờ khắc phục thế nào?</p>
+<p>Về lý thuyết, Caddy sẽ tự động làm mới chứng chỉ khi hết hạn. Trong trường hợp này, chứng chỉ vẫn còn hiệu lực nên có vẻ như nó không xem xét tiếp tình huống bị thu hồi khi chưa hết hạn. Vì vậy, giải pháp nhanh và dễ thực hiện nhất trong tình huống này là đăng ký một chứng chỉ mới và cấu hình lại thông tin chứng chỉ mới cho Caddy (thay vì để Caddy tự quản lý).</p>
+<h2 id=giải-pháp>Giải pháp</h2>
+<h3 id=bước-1---cài-đặt-certbot>Bước 1 - Cài đặt Certbot</h3>
+<p>Tham khảo các bước cài đặt Certbot tại đây: <a href=https://certbot.eff.org/instructions>https://certbot.eff.org/instructions</a></p>
+<h3 id=bước-2---đăng-ký-chứng-chỉ>Bước 2 - Đăng ký chứng chỉ</h3>
+<p>Certbot chưa hỗ trợ Caddy trong việc cập nhật cấu hình tự động cho web server, nên việc này cần làm thủ công.</p>
+<p>Bước 2.1 - Cấu hình Caddy chạy theo chế độ phục vụ file với directive <code>file_server</code> và chọn một thư mục webroot nào đó.</p>
+<p>Bước 2.2 - Thực thi lệnh dưới đây để lấy private key và certificate.</p>
+<pre tabindex=0><code>sudo certbot certonly --webroot
+</code></pre><p>Sau khi thực hiện bước này thành công, chúng ta sẽ có hai tập tin <code>.pem</code> lưu mã hash của chứng chỉ và khóa riêng tư (private key). Hai thông tin này được lưu tại thư mục <code>/etc/letsencrypt/live/&lt;tên-domain></code></p>
+<h3 id=bước-3---cập-nhật-cấu-hình>Bước 3 - Cập nhật cấu hình</h3>
+<p>Cập nhật cấu hình với module <code>tls</code> và trỏ đường dẫn đến hai tập tin nhận được ở trên. (Có thể sử dụng giải pháp cấu hình Caddyfile hoặc admin API).</p>
+<p>Khởi động lại service và tiếp tục thưởng thức những ngày tháng vui vẻ với Caddy.</p>
+<h2 id=một-vài-lưu-ý>Một vài lưu ý</h2>
+<h3 id=lỗi-permission-denied-to-etcletsencryptlive>Lỗi &ldquo;Permission denied to /etc/letsencrypt/live&rdquo;</h3>
+<p>Nếu quá trình khởi động lại service gặp lỗi <code>Permission denied to /etc/letsencrypt/live</code> thì có thể giải quyết bằng việc thực hiện thao tác mở rộng quyền truy cập vào các file <code>.pem</code> được cấp.</p>
+<pre tabindex=0><code>sudo chmod 755 /etc/letsencrypt/live/
+</code></pre><p>Nếu thực thi lệnh trên mà lỗi vẫn còn tiếp diễn thì hãy xem tập tin trên có phải là một <code>soft linked file</code> không (Bằng cách sử dụng lệnh <code>ls -la</code>). Nếu đúng là <code>soft linked file</code> thì mở rộng quyền truy cập các tập tin gốc sẽ giải quyết được vấn đề.</p>
+<h3 id=thông-báo-hiển-thị-không-đồng-nhất-trên-các-trình-duyệt-client>Thông báo hiển thị không đồng nhất trên các trình duyệt (client)</h3>
+<p>Nếu chứng chỉ trên server bị thu hồi, có thể xảy ra hiện tượng sau với những người dùng truy cập vào hệ thống: &ldquo;Một số thì truy cập được bình thường (không có dấu hiệu lỗi hay bị ảnh hưởng) và một số thì nhận thông báo chứng chỉ không an toàn&rdquo;. Hiện tượng này sẽ diễn ra trong khoảng 24 đến 48 giờ (chưa có số liệu chính xác).</p>
+<p>Nếu người dùng (hoặc khách hàng) phản ánh về lỗi trên, chúng ta có thể kiểm tra lại qua các dịch vụ kiểm tra SSL/TLS. Một số dịch vụ mà mình sử dụng cung cấp các thông tin chi tiết và chính xác là:</p>
+<ul>
+<li><a href=https://www.ssllabs.com/>https://www.ssllabs.com/</a></li>
+<li><a href=https://ssltools.digicert.com/>https://ssltools.digicert.com/</a></li>
+<li><a href=https://crt.sh/>https://crt.sh/</a></li>
+</ul>
+<p><img src=/_img/image-20210613151356387.png alt=image-20210613151356387></p>
+</div>
+<div id=disqus_thread></div>
+<script type=text/javascript>(function(){var a,b;if(location.hostname==="localhost"||location.hostname==="127.0.0.1"||location.hostname==="")return;a=document.createElement('script'),a.type='text/javascript',a.async=!0,b='hoa-d',a.src='//'+b+'.disqus.com/embed.js',(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(a)})()</script>
+<noscript>
+Please enable JavaScript to view the
+<a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a>
+</noscript>
+<a href=http://disqus.com/ class=dsq-brlink>comments powered by
+<span class=logo-disqus>Disqus</span>
+</a>
+</article>
+</div>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','G-YLG1KEYLCC','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+<script defer src=https://use.fontawesome.com/releases/v5.12.1/js/all.js integrity=sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR crossorigin=anonymous></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.js></script>
+<script type=text/javascript>tocbot&&tocbot.init({tocSelector:'.toc',contentSelector:'.post',headingSelector:'h2, h3, h4',collapseDepth:4})</script>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!doctype html><html lang=en-us>
+<head>
+<link href=https://gmpg.org/xfn/11 rel=profile>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name=generator content="Hugo 0.89.2">
+<title>Unit Testing trong Angular • hoa.d</title>
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Unit Testing trong Angular">
+<meta name=twitter:description content="Nếu bạn chưa biết Unit Testing và những khái niệm cơ bản liên quan, hãy tìm đọc bài viết Unit Test - Những bước chân đầu tiên trong Tạp Chí Lập Trình Vol.4.
+ Kiểm thử giúp đảm bảo những thay đổi hoặc bổ sung không gây ảnh hưởng đến các tính năng cũ của ứng dụng hoặc phát sinh lỗi mới. Chúng ta tiếp tục tìm hiểu cách viết unit test cho các ứng dụng được xây dựng với framework Angular.">
+<meta property="og:title" content="Unit Testing trong Angular">
+<meta property="og:description" content="Nếu bạn chưa biết Unit Testing và những khái niệm cơ bản liên quan, hãy tìm đọc bài viết Unit Test - Những bước chân đầu tiên trong Tạp Chí Lập Trình Vol.4.
+ Kiểm thử giúp đảm bảo những thay đổi hoặc bổ sung không gây ảnh hưởng đến các tính năng cũ của ứng dụng hoặc phát sinh lỗi mới. Chúng ta tiếp tục tìm hiểu cách viết unit test cho các ứng dụng được xây dựng với framework Angular.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://hoadh.github.io/post/unit-testing-trong-angular/"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2020-07-15T03:17:53+07:00">
+<meta property="article:modified_time" content="2020-07-15T03:17:53+07:00">
+<link rel=stylesheet href=/scss/hyde-hyde.3081c4981fb69a2783dd36ecfdd0e6ba7a158d4cbfdd290ebce8f78ba0469fc6.css integrity="sha256-MIHEmB+2mieD3Tbs/dDmunoVjUy/3SkOvOj3i6BGn8Y=">
+<link rel=stylesheet href=/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58+TzH3icCkSHGoJ+ed7w=" media=print>
+<link rel=stylesheet href=/scss/tocbot.5ef07cebc3c477b54270456f149ee02922479bb7555fd344b2c69f953b0e7e5e.css integrity="sha256-XvB868PEd7VCcEVvFJ7gKSJHm7dVX9NEssaflTsOfl4="><!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js></script>
+<script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]-->
+<link rel=apple-touch-icon-precomposed sizes=144x144 href=/apple-touch-icon-144-precomposed.png>
+<link rel="shortcut icon" href=/favicon.png>
+<link rel=stylesheet href=https://hoadh.github.io/css/custom.css>
+</head>
+<body>
+<div class=sidebar>
+<div class=container>
+<div class=sidebar-about>
+<span class=site__title>
+<a href=https://hoadh.github.io/>
+hoa.d
+</a>
+</span>
+<p class=site__description>
+a simple man who loves reading his mind "on-the-fly".
+</p>
+</div>
+<div class=collapsible-menu>
+<input type=checkbox id=menuToggle>
+<label for=menuToggle>hoa.d</label>
+<div class=menu-content>
+<div>
+<ul class=sidebar-nav>
+</ul>
+</div>
+<section class=social>
+<a href=https://facebook.com/hoadng rel=me><i class="fab fa-facebook-f"></i></a>
+<a href=https://github.com/hoadh rel=me><i class="fab fa-github fa-lg" aria-hidden=true></i></a>
+<a href=https://linkedin.com/in/hoad rel=me><i class="fab fa-linkedin fa-lg" aria-hidden=true></i></a>
+<a href=https://t.me/hoadang rel=me><i class="fab fa-telegram fa-lg" aria-hidden=true></i></a>
+</section>
+</div>
+</div>
+<div class=copyright>
+&copy; 2021 hoadh.github.io
+</div>
+</div>
+</div>
+<div class="content container">
+<article>
+<header>
+<h1>Unit Testing trong Angular</h1>
+<div class=post__meta>
+<i class="fas fa-calendar-alt"></i> Jul 15, 2020
+<br>
+<i class="fas fa-tags"></i>
+<a class="badge badge-tag" href=/tags/testing>testing</a>
+<a class="badge badge-tag" href=/tags/unit-testing>unit testing</a>
+<a class="badge badge-tag" href=/tags/automation-testing>automation testing</a>
+<br>
+<i class="fas fa-clock"></i> 13 min read
+</div>
+</header>
+<div class=toc-wrapper>
+<input type=checkbox id=tocToggle>
+<label for=tocToggle>Table of Content</label>
+<div class=toc id=TableOfContents></div>
+</div>
+<div class=post>
+<blockquote>
+<p>Nếu bạn chưa biết Unit Testing và những khái niệm cơ bản liên quan, hãy tìm đọc bài viết <strong>Unit Test - Những bước chân đầu tiên</strong> trong Tạp Chí Lập Trình Vol.4.</p>
+</blockquote>
+<p>Kiểm thử giúp đảm bảo những thay đổi hoặc bổ sung không gây ảnh hưởng đến các tính năng cũ của ứng dụng hoặc phát sinh lỗi mới. Chúng ta tiếp tục tìm hiểu cách viết unit test cho các ứng dụng được xây dựng với framework Angular. Cụ thể, qua bài viết này, chúng ta sẽ đạt được các mục tiêu sau:</p>
+<ul>
+<li>Hiểu biết cơ bản về testing trong Angular</li>
+<li>Có thể viết unit test cho component</li>
+<li>Có thể viết unit test cho service</li>
+<li>Có thể giả lập service phụ thuộc trong các component</li>
+</ul>
+<p>Để đọc hiểu bài viết này, bạn cần những kiến thức cơ bản về lập trình với ngôn ngữ JavaScript và sử dụng được framework Angular.</p>
+<h2 id=tổng-quan>Tổng quan</h2>
+<p>Angular hỗ trợ hai loại kiểm thử: Unit testing (kiểm thử đơn vị) và End-to-end testing (e2e). Với kiểm thử đơn vị, Jasmine là framework được sử dụng mặc định. Karma là thành phần thực thi các bộ test. Sau khi thực thi các bộ test, Karma sẽ tạo file báo cáo kết quả với định dạng HTML. Với kiểm thử e2e, nhóm phát triển Angular gợi ý sử dụng Protractor. Đây là thư viện được xây dựng dựa trên Selenium WebDriver.</p>
+<p>Để thực thi kiểm thử đơn vị, chúng ta sử dụng lệnh <code>ng serve</code>. Để thực thi kiểm thử e2e, sử dụng lệnh <code>ng e2e</code>.</p>
+<h2 id=tìm-hiểu-jasmine>Tìm hiểu Jasmine</h2>
+<p>Jasmine là framework kiểm thử cho các ứng dụng được xây dựng trên JavaScript. Với cú pháp đơn giản, rõ ràng, đây là một trong những framework mạnh mẽ để viết các unit test cho mã JavaScript. Nó có thể chạy độc lập, không phụ thuộc vào các thư viện khác và không yêu cầu DOM.</p>
+<p>Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>describe</span>(<span style=color:#e6db74>&#39;TestSuiteName&#39;</span>, () =&gt; {
+  <span style=color:#75715e>// suite of tests here
+</span><span style=color:#75715e></span>
+  <span style=color:#a6e22e>it</span>(<span style=color:#e6db74>&#39;should do some stuff&#39;</span>, () =&gt; {
+    <span style=color:#75715e>// this is the body of the test
+</span><span style=color:#75715e></span>  });
+});
+</code></pre></div><h3 id=describe>describe</h3>
+<p>Hàm <code>describe</code> được sử dụng để nhóm các đặc tả hoặc kiểm thử có liên quan. Đầu vào là 2 tham số:</p>
+<ul>
+<li>một chuỗi mô tả mục đích của nhóm kiểm thử</li>
+<li>một hàm callback chứa các đặc tả, hoặc các bộ kiểm thử</li>
+</ul>
+<p>Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>describe</span>(<span style=color:#e6db74>&#34;TestSuiteName&#34;</span>, <span style=color:#66d9ef>function</span>() {
+	...
+});
+</code></pre></div><p>Các khối <code>describe</code> có thể lồng nhau. Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>describe</span>(<span style=color:#e6db74>&#34;A suite&#34;</span>, <span style=color:#66d9ef>function</span>() {
+	...
+	
+	<span style=color:#a6e22e>describe</span>(<span style=color:#e6db74>&#34;Another suite inside&#34;</span>, <span style=color:#66d9ef>function</span>() {
+    ...
+  });
+  
+  ...
+});
+</code></pre></div><p><em>Để tạm thời dừng thực thi một khối <code>describe</code> nào đó, chúng ta có thể thay thế hàm thành <code>xdescribe</code>. Để chỉ thực thi một khối <code>describe</code> nào đó, chúng ta sử dụng <code>fdescribe</code>.</em></p>
+<h3 id=it>it</h3>
+<p>Đây là hàm chứa các đặc tả hoặc kiểm thử cụ thể.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>it</span>(<span style=color:#e6db74>&#34;contains spec with an expectation&#34;</span>, <span style=color:#66d9ef>function</span>() {
+	<span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>myOrg</span>).<span style=color:#a6e22e>toBe</span>(<span style=color:#e6db74>&#39;CodeGym&#39;</span>);
+});
+</code></pre></div><p><em>Để tạm thời dừng một test case nào đó, chúng ta sử dụng hàm <code>xit</code> thay thế <code>it</code>. Và để chỉ thực thi một test case nào đó, chúng ta sử dụng <code>fit</code> thay thế.</em></p>
+<h3 id=expect>expect</h3>
+<p>Hàm expect được sử dụng để đánh giá kết quả một đợi và kết quả thực tế của một kiểm thử.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript>	<span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>myOrg</span>).<span style=color:#a6e22e>toBe</span>(<span style=color:#e6db74>&#39;CodeGym&#39;</span>);
+</code></pre></div><p>Như ví dụ trên, hàm <code>expect</code> mong đợi giá trị của biến <code>my_variable</code> có bằng <code>true</code> hay không. Nếu giá trị thực tế của biến <code>my_variable</code> là <code>true</code> thì kết quả của test case này là <code>PASS</code>; ngược lại, kết quả là <code>FAIL</code>.</p>
+<h3 id=setup-và-teardown>Setup và Teardown</h3>
+<ul>
+<li>Setup là thành phần được thực thi trước tất cả (hoặc mỗi) test case.</li>
+<li>Teardown là thành phần được thực thi sau tất cả (hoặc mỗi) test case.</li>
+</ul>
+<p>Trong Jasmine, để thiết lập <strong>Setup</strong> và <strong>Teardown</strong>, chúng ta sử dụng các hàm sau:</p>
+<ul>
+<li>beforeEach</li>
+<li>beforeAll</li>
+<li>afterEach</li>
+<li>afterAll</li>
+</ul>
+<p>Thứ tự thực hiện của các hàm trên trong Jasmine được thể hiện như khối hình dưới đây.</p>
+<p><img src=/_img/jasmine_functions.png alt=jasmine_functions.png></p>
+<h3 id=done>done</h3>
+<p>Xét tình huống chúng ta muốn kiểm tra một hàm xử lý bất đồng bộ (async function). Việc thực thi hàm này có thể mất thời gian chờ đợi. Hàm <code>done()</code> được sử dụng trong trường hợp này để báo Jasmine biết thời điểm kết thúc việc thực thi.</p>
+<p>Hãy xem qua ví dụ sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>it</span>(<span style=color:#e6db74>&#39;should wait 3 seconds&#39;</span>, (<span style=color:#a6e22e>done</span>) =&gt; {
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>weAre</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;CodeGym&#39;</span>;
+  <span style=color:#a6e22e>setTimeout</span>( () =&gt; {
+    <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>weAre</span>).<span style=color:#a6e22e>toBe</span>(<span style=color:#e6db74>&#39;CodeGym&#39;</span>);
+    <span style=color:#a6e22e>done</span>();
+  }, <span style=color:#ae81ff>3000</span>);
+});
+</code></pre></div><p>Chúng ta muốn jasmine đợi 5 giây trước khi đánh giá kết quả của biến <code>weAre</code>.</p>
+<p>Với một hàm bất đồng bộ trả về kiểu Promise, chúng ta có thể viết kiểm thử như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>it</span>(<span style=color:#e6db74>&#39;should wait until getting result&#39;</span>, (<span style=color:#a6e22e>done</span>) =&gt; {
+	<span style=color:#a6e22e>doSomething</span>()
+    .<span style=color:#a6e22e>then</span>( <span style=color:#a6e22e>result</span> =&gt; {
+	    <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>result</span>).<span style=color:#a6e22e>toBe</span>(<span style=color:#e6db74>&#39;CodeGym&#39;</span>);
+	    <span style=color:#a6e22e>done</span>();
+	})
+    .<span style=color:#66d9ef>catch</span>(<span style=color:#a6e22e>error</span> =&gt; {
+      <span style=color:#a6e22e>fail</span>();
+      <span style=color:#a6e22e>done</span>();
+  });
+});
+</code></pre></div><h2 id=testing-trong-angular>Testing trong Angular</h2>
+<h3 id=tiện-ích-testbed>Tiện ích TestBed</h3>
+<p><code>TestBed</code> là một tiện ích được Angular cung cấp để tạo môi trường kiểm thử phù hợp cho các thành phần của Angular như: Component, Service, Pipe, Directive,&mldr;</p>
+<p>Với TestBed, lập trình viên có thể khởi tạo một module kiểm thử với phương thức <code>configureTestingModule</code>. Tham số cung cấp cho <code>configureTestingModule</code> khi khởi tạo module là những metadata cần thiết cho một module như imports, providers, declarations,&mldr;</p>
+<p>Chúng ta thường tạo mới một module kiểm thử trước khi thực hiện các test case liên quan tới component trong hàm beforeEach (như đã giới thiệu ở trên). Ví dụ:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#a6e22e>beforeEach</span>(<span style=color:#66d9ef>async</span>(() <span style=color:#f92672>=&gt;</span> {
+  <span style=color:#a6e22e>TestBed</span>.<span style=color:#a6e22e>configureTestingModule</span>({
+    <span style=color:#a6e22e>imports</span><span style=color:#f92672>:</span> [
+      <span style=color:#a6e22e>RouterTestingModule</span>
+    ],
+    <span style=color:#a6e22e>declarations</span><span style=color:#f92672>:</span> [
+      <span style=color:#a6e22e>AppComponent</span>
+    ],
+  }).<span style=color:#a6e22e>compileComponents</span>();
+}));
+</code></pre></div><p>Nếu bộ kiểm thử đang thực thi phụ thuộc vào một service nào đó, chúng ta khai báo tên service vào metadata <code>providers</code> như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#a6e22e>beforeEach</span>(<span style=color:#66d9ef>async</span>(() <span style=color:#f92672>=&gt;</span> {
+  <span style=color:#a6e22e>TestBed</span>.<span style=color:#a6e22e>configureTestingModule</span>({
+    ...
+    <span style=color:#a6e22e>providers</span><span style=color:#f92672>:</span> [<span style=color:#a6e22e>OneService</span>]
+  }).<span style=color:#a6e22e>compileComponents</span>();
+}));
+</code></pre></div><h3 id=component-fixtures>Component Fixtures</h3>
+<p>Fixture là đối tượng đại diện component root trong Angular. Với fixture, chúng ta có thể sử dụng <code>debugElement</code> để truy cập các thuộc tính bên trong component.</p>
+<p>Component fixture được tạo bằng phương thức <code>createComponent</code> của TestBed.</p>
+<p>Hãy xem qua ví dụ dưới đây. Để lấy được giá trị text nằm trong thẻ <code>&lt;h1></code> đầu tiên trên template, chúng ta viết đoạn mã như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#a6e22e>fixture</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>TestBed</span>.<span style=color:#a6e22e>createComponent</span>(<span style=color:#a6e22e>MyComponent</span>); <span style=color:#75715e>// (1)
+</span><span style=color:#75715e></span><span style=color:#a6e22e>debugElement</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>fixture</span>.<span style=color:#a6e22e>debugElement</span>; <span style=color:#75715e>// (2)
+</span><span style=color:#75715e></span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>el</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>debugElement</span>.<span style=color:#a6e22e>query</span>(<span style=color:#a6e22e>By</span>.<span style=color:#a6e22e>css</span>(<span style=color:#e6db74>&#39;h1&#39;</span>)); <span style=color:#75715e>// (3)
+</span><span style=color:#75715e></span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>value</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>el</span>.<span style=color:#a6e22e>nativeElement</span>.<span style=color:#a6e22e>innerHTML</span>; <span style=color:#75715e>// (4)
+</span></code></pre></div><p>Giải thích các dòng mã trên:</p>
+<ol>
+<li>Tạo một component fixture</li>
+<li>Truy cập đối tượng debugElement từ fixture</li>
+<li>Truy cập thẻ <code>&lt;h1></code> trên template bằng phương thức <code>query</code>. Chúng ta có thể kết hợp <code>By.css</code> để truy cập các phần tử với phương pháp tương tự selector của css.</li>
+<li>Biến <code>value</code> chứa giá trị text trong thẻ <code>&lt;h1></code> trên template.</li>
+</ol>
+<h2 id=tình-huống-viết-test-trong-angular>Tình huống viết test trong Angular</h2>
+<h3 id=unit-test-cho-component>Unit test cho component</h3>
+<p>Bước 1: Tạo mới một component có tên là CodeGym từ Angular/CLI với lệnh sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ng g c codegym
+</code></pre></div><p>Cấu trúc thư mục của component CodeGym được tạo như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scala data-lang=scala>src<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> app<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> codegym<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> <span style=color:#f92672>--</span> codegym<span style=color:#f92672>.</span>component<span style=color:#f92672>.</span>css
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> <span style=color:#f92672>--</span> codegym<span style=color:#f92672>.</span>component<span style=color:#f92672>.</span>html
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> <span style=color:#f92672>--</span> codegym<span style=color:#f92672>.</span>component<span style=color:#f92672>.</span>spec<span style=color:#f92672>.</span>ts
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> <span style=color:#f92672>--</span> codegym<span style=color:#f92672>.</span>component<span style=color:#f92672>.</span>ts
+</code></pre></div><p>File <code>codegym.component.spec.ts</code> là nơi chứa mã unit test của component CodeGym. Chúng ta sẽ bổ sung mã test case vào đây sau khi bổ sung mã cho template và component.</p>
+<p>Bước 2: Sửa nội dung file component<code>codegym.component.ts</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>Component</span> } <span style=color:#66d9ef>from</span> <span style=color:#e6db74>&#39;@angular/core&#39;</span>;
+
+<span style=color:#66d9ef>@Component</span>({
+  <span style=color:#a6e22e>selector</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;app-codegym&#39;</span>,
+  <span style=color:#a6e22e>templateUrl</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;./codegym.component.html&#39;</span>,
+  <span style=color:#a6e22e>styleUrls</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#39;./codegym.component.css&#39;</span>]
+})
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CodegymComponent</span> {
+  <span style=color:#a6e22e>myOrg</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;CodeGym&#39;</span>;
+
+  <span style=color:#a6e22e>changeMyText() {</span>
+    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>myOrg</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;CodeGym MonCity&#39;</span>;
+  }
+}
+</code></pre></div><p>Sửa nội dung file template <code>codegym.component.html</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>p</span>&gt;{{myOrg}}&lt;/<span style=color:#f92672>p</span>&gt;
+
+&lt;<span style=color:#f92672>button</span> <span style=color:#960050;background-color:#1e0010>(</span><span style=color:#a6e22e>click</span><span style=color:#960050;background-color:#1e0010>)=&#34;</span><span style=color:#a6e22e>changeMyText</span><span style=color:#960050;background-color:#1e0010>()&#34;</span>&gt;Change Text&lt;/<span style=color:#f92672>button</span>&gt;
+</code></pre></div><p>Ở component này, khi người dùng click vào button <code>Change Text</code> thì giá trị của myOrg thay đổi, và chuỗi trong thẻ trên template sẽ được cập nhật lại.</p>
+<p>Bước 3: Bổ sung test case</p>
+<p>Chúng ta muốn kiểm tra chuỗi được cập nhật sau khi click button có như mong muốn. Test case được bổ sung vào file <code>codegym.component.spec.ts</code> như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#a6e22e>it</span>(<span style=color:#e6db74>&#39;should change text after clicking on `Change Text` button&#39;</span>, () <span style=color:#f92672>=&gt;</span> {
+  <span style=color:#75715e>// Arrange (1)
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>buttonElement</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>debugElement</span>.<span style=color:#a6e22e>query</span>(<span style=color:#a6e22e>By</span>.<span style=color:#a6e22e>css</span>(<span style=color:#e6db74>&#39;button&#39;</span>));
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>pElement</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>debugElement</span>.<span style=color:#a6e22e>query</span>(<span style=color:#a6e22e>By</span>.<span style=color:#a6e22e>css</span>(<span style=color:#e6db74>&#39;p&#39;</span>));
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>expected</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;CodeGym MonCity&#39;</span>;
+
+  <span style=color:#75715e>// Act (2)
+</span><span style=color:#75715e></span>  <span style=color:#a6e22e>buttonElement</span>.<span style=color:#a6e22e>triggerEventHandler</span>(<span style=color:#e6db74>&#39;click&#39;</span>, <span style=color:#66d9ef>null</span>);
+  <span style=color:#a6e22e>fixture</span>.<span style=color:#a6e22e>detectChanges</span>();
+
+  <span style=color:#75715e>// Assert (3)
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>actual</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>pElement</span>.<span style=color:#a6e22e>nativeElement</span>.<span style=color:#a6e22e>innerText</span>;
+  <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>actual</span>).<span style=color:#a6e22e>toEqual</span>(<span style=color:#a6e22e>expected</span>);
+});
+</code></pre></div><p>Giải thích mã test case trên:</p>
+<ol>
+<li><strong>Arrange (1)</strong> là khu vực chứa mã chuẩn bị cho dự án. Bao gồm: ánh xạ đến hai thẻ và trên template thông qua hàm <code>query</code> thuộc <code>DebugElement</code>, kết hợp <code>By.css</code>.</li>
+<li><strong>Act (2)</strong> là nơi chứa mã thực hiện thao tác click vào button. Với phương thức <code>triggerEventHandler</code>, chúng ta có thể kích hoạt một sự kiện trên template. Trong test case, Angular không tự động phát hiện các thay đổi. Vì vậy cần gọi hàm <code>detectChanges</code> từ fixture để yêu cầu Angular chờ đến khi template được cập nhật.</li>
+<li><strong>Assert(3)</strong> làm hai nhiệm vụ sau:
+<ol>
+<li>Truy cập nội dung cập nhật trên template nhờ sử dụng thuộc tính <code>.nativeElement.innerText</code>, giá giá trị vào biến actual.</li>
+<li>So sánh với giá trị mong đợi (biến expected) thông qua hàm <code>expect</code>.</li>
+</ol>
+</li>
+</ol>
+<h3 id=unit-test-cho-service>Unit test cho service</h3>
+<p>Giả sử, ứng dụng của chúng ta cần service phục vụ xử lý văn bản.</p>
+<p>Bước 1: Tạo mới service</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ng g s text-transform
+</code></pre></div><p>Cấu trúc thư mục của service text-transform được tạo như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scala data-lang=scala>src<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> app<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> text<span style=color:#f92672>-</span>transform<span style=color:#f92672>.</span>service<span style=color:#f92672>.</span>spec<span style=color:#f92672>.</span>ts
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> text<span style=color:#f92672>-</span>transform<span style=color:#f92672>.</span>service<span style=color:#f92672>.</span>ts
+</code></pre></div><p>File <code>text-transform.service.spec.ts</code> là nơi chứa mã unit test của service TextTransform.</p>
+<p>Bước 2: Bổ sung mã vào <code>text-transform.service.ts</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#a6e22e>removeSpaces</span>(<span style=color:#a6e22e>text</span>: <span style=color:#66d9ef>string</span>) {
+	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>text</span>.<span style=color:#a6e22e>replace</span>(<span style=color:#e6db74>/\s/g</span>, <span style=color:#e6db74>&#39;&#39;</span>);
+}
+</code></pre></div><p>Phương thức <code>removeSpaces</code> này có nhiệm vụ xoá tất cả khoảng trắng trong chuỗi đầu vào.</p>
+<p>Bước 3: Bổ sung mã test case vào <code>text-transform.service.spec.ts</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#a6e22e>it</span>(<span style=color:#e6db74>&#39;should remove all space characters&#39;</span>, () <span style=color:#f92672>=&gt;</span> {
+  <span style=color:#75715e>// Arrange
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>service</span>: <span style=color:#66d9ef>TextTransformService</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>TestBed</span>.<span style=color:#66d9ef>get</span>(<span style=color:#a6e22e>TextTransformService</span>); <span style=color:#75715e>// (1)
+</span><span style=color:#75715e></span>  
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>text</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;Code Gym Moncity&#39;</span>;
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>expected</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;CodeGymMoncity&#39;</span>;
+
+  <span style=color:#75715e>// Act
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>actual</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>service</span>.<span style=color:#a6e22e>removeSpaces</span>(<span style=color:#a6e22e>text</span>); <span style=color:#75715e>// (2)
+</span><span style=color:#75715e></span>
+  <span style=color:#75715e>// Assert
+</span><span style=color:#75715e></span>  <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>actual</span>).<span style=color:#a6e22e>toEqual</span>(<span style=color:#a6e22e>expected</span>); <span style=color:#75715e>// (3)
+</span><span style=color:#75715e></span>});
+</code></pre></div><p>Ở đoạn mã trên, chúng ta sử dụng <code>TestBed.get</code> để lấy đối tượng service được tạo ra từ testing module. (1)</p>
+<p>Sau khi thực thi phương thức <code>removeSpaces</code> (2), chúng ta kiểm tra kết quả trả về với giá trị mong đợi qua dòng lệnh <code>expect(actual).toEqual(expected);</code> (3)</p>
+<h3 id=unit-test-cho-component-có-service-phụ-thuộc>Unit test cho component có service phụ thuộc</h3>
+<p>Với hai ví dụ unit test cho component và service ở trên, chúng ta đã có component và service. Nếu component muốn sử dụng service TextTransform để để chuyển xoá khoảng trắng trước khi hiển thị thì chúng ta phải tiêm (inject) service vào component qua constructor như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript>...
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CodegymComponent</span> {
+  ..
+  <span style=color:#66d9ef>constructor</span>(<span style=color:#66d9ef>private</span> <span style=color:#a6e22e>textTransform</span>: <span style=color:#66d9ef>TextTransformService</span>) {}
+  ...
+}
+</code></pre></div><p>Ở phía test case, chúng ta bổ sung metadata <code>providers</code> cho phương thức <code>createTestingModule</code>. Đây là nơi khai báo các phụ thuộc cho module testing.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#a6e22e>beforeEach</span>(<span style=color:#66d9ef>async</span>(() <span style=color:#f92672>=&gt;</span> {
+  <span style=color:#a6e22e>TestBed</span>.<span style=color:#a6e22e>configureTestingModule</span>({
+    <span style=color:#a6e22e>declarations</span><span style=color:#f92672>:</span> [ <span style=color:#a6e22e>CodegymComponent</span> ],
+    <span style=color:#a6e22e>providers</span><span style=color:#f92672>:</span> [<span style=color:#a6e22e>TextTransformService</span>]
+  })
+  .<span style=color:#a6e22e>compileComponents</span>();
+}));
+</code></pre></div><h3 id=unit-test-cho-service-sử-dụng-httpclient>Unit test cho service sử dụng HttpClient</h3>
+<p>Với tình huống cần test các service có sử dụng giao thức HTTP để giao tiếp với API Backend, Angular cung cấp <code>HttpTestingClientModule</code> và công cụ giả lập HTTP bằng <code>HttpTestingController</code>.</p>
+<p>Ví dụ, chúng ta xây dựng tính năng hiển thị các thông tin Github của account <code>codegym-vn</code>. Như vậy sẽ cần service gọi API của Github để lấy các thông tin này.</p>
+<p>Bước 1: Tạo mới service</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ng g s github-api
+</code></pre></div><p>Cấu trúc thư mục của service text-transform được tạo như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scala data-lang=scala>src<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> app<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> github<span style=color:#f92672>-</span>api<span style=color:#f92672>.</span>service<span style=color:#f92672>.</span>spec<span style=color:#f92672>.</span>ts
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> github<span style=color:#f92672>-</span>api<span style=color:#f92672>.</span>service<span style=color:#f92672>.</span>ts
+</code></pre></div><p>File <code> github-api.service.spec.ts</code> là nơi chứa mã unit test của service GithubApi.</p>
+<p>Bước 2: Bổ sung mã vào <code>app.module.ts</code> và <code>github-api.service.ts</code></p>
+<p>Vì chúng ta cần tạo các request HTTP, nên ứng dụng Angular được import module <code>HttpClientModule</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript>...
+<span style=color:#66d9ef>import</span> {<span style=color:#a6e22e>HttpClientModule</span>} <span style=color:#66d9ef>from</span> <span style=color:#e6db74>&#39;@angular/common/http&#39;</span>;
+
+<span style=color:#66d9ef>@NgModule</span>({
+  ...
+  <span style=color:#a6e22e>imports</span><span style=color:#f92672>:</span> [
+    ...
+    <span style=color:#a6e22e>HttpClientModule</span>
+  ],
+  ...
+})
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AppModule</span> { }
+</code></pre></div><p>Tiếp tục bổ sung mã vào file <code>github-api.service.ts</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>Injectable</span> } <span style=color:#66d9ef>from</span> <span style=color:#e6db74>&#39;@angular/core&#39;</span>;
+<span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>HttpClient</span> } <span style=color:#66d9ef>from</span> <span style=color:#e6db74>&#39;@angular/common/http&#39;</span>;
+
+<span style=color:#66d9ef>@Injectable</span>({
+  <span style=color:#a6e22e>providedIn</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;root&#39;</span>
+})
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>GithubApiService</span> {
+  <span style=color:#a6e22e>apiUrl</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;https://api.github.com/users/codegym-vn&#39;</span>;
+
+  <span style=color:#66d9ef>constructor</span>(<span style=color:#66d9ef>private</span> <span style=color:#a6e22e>httpClient</span>: <span style=color:#66d9ef>HttpClient</span>) { }
+
+  <span style=color:#a6e22e>fetchUser() {</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>httpClient</span>.<span style=color:#66d9ef>get</span>(<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>apiUrl</span>);
+  }
+}
+
+
+</code></pre></div><p>Phương thức <code>fetchUser</code> có nhiệm vụ lấy thông tin của <code>codegym-vn</code> từ API của Github qua đường link <code>https://api.github.com/users/codegym-vn</code>.</p>
+<p>Bước 3: Bổ sung mã test case vào <code>github-api.service.spec.ts</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>TestBed</span> } <span style=color:#66d9ef>from</span> <span style=color:#e6db74>&#39;@angular/core/testing&#39;</span>;
+
+<span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>GithubApiService</span> } <span style=color:#66d9ef>from</span> <span style=color:#e6db74>&#39;./github-api.service&#39;</span>;
+<span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>HttpClientTestingModule</span>, <span style=color:#a6e22e>HttpTestingController</span> } <span style=color:#66d9ef>from</span> <span style=color:#e6db74>&#39;@angular/common/http/testing&#39;</span>;
+
+<span style=color:#a6e22e>fdescribe</span>(<span style=color:#e6db74>&#39;GithubApiService&#39;</span>, () <span style=color:#f92672>=&gt;</span> {
+  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>httpMock</span>: <span style=color:#66d9ef>HttpTestingController</span>; <span style=color:#75715e>// (1)
+</span><span style=color:#75715e></span>
+  <span style=color:#a6e22e>beforeEach</span>(() <span style=color:#f92672>=&gt;</span> {
+    <span style=color:#a6e22e>TestBed</span>.<span style=color:#a6e22e>configureTestingModule</span>({
+      <span style=color:#a6e22e>imports</span><span style=color:#f92672>:</span> [<span style=color:#a6e22e>HttpClientTestingModule</span>]
+    });
+    <span style=color:#a6e22e>httpMock</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>TestBed</span>.<span style=color:#66d9ef>get</span>(<span style=color:#a6e22e>HttpTestingController</span>);
+  });
+
+  <span style=color:#a6e22e>it</span>(<span style=color:#e6db74>&#39;should fetch user from Github API&#39;</span>, () <span style=color:#f92672>=&gt;</span> {
+    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>service</span>: <span style=color:#66d9ef>GithubApiService</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>TestBed</span>.<span style=color:#66d9ef>get</span>(<span style=color:#a6e22e>GithubApiService</span>);
+    
+    <span style=color:#75715e>// (2)
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>service</span>.<span style=color:#a6e22e>fetchUser</span>().<span style=color:#a6e22e>subscribe</span>( <span style=color:#a6e22e>res</span> <span style=color:#f92672>=&gt;</span> {
+      <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>res</span>[<span style=color:#e6db74>&#39;login&#39;</span>]).<span style=color:#a6e22e>toEqual</span>(<span style=color:#e6db74>&#39;codegym-vn&#39;</span>); <span style=color:#75715e>// (3)
+</span><span style=color:#75715e></span>    });
+
+    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>req</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>httpMock</span>.<span style=color:#a6e22e>expectOne</span>(<span style=color:#a6e22e>service</span>.<span style=color:#a6e22e>apiUrl</span>); <span style=color:#75715e>// (4)
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>method</span>).<span style=color:#a6e22e>toBe</span>(<span style=color:#e6db74>&#39;GET&#39;</span>);
+    <span style=color:#a6e22e>httpMock</span>.<span style=color:#a6e22e>verify</span>(); <span style=color:#75715e>// (5)
+</span><span style=color:#75715e></span>  });
+});
+</code></pre></div><p>Ở đoạn mã trên, chúng ta sử dụng <code>HttpTestingController</code> để xác minh các HTTP request. (1)</p>
+<p>Sau khi thực thi phương thức <code>fetchUser()</code> (2), chúng ta kiểm tra kết quả API trả về với giá trị mong đợi qua mã lệnh <code>expect(res['login']).toEqual('codegym-vn');</code> (3)</p>
+<p>Đồng thời, chúng ta có thể kiểm chứng service đã tạo một HTTP request với method &lsquo;GET&rsquo; tới đường link được lưu trong thuộc tính <code>apiUrl</code> . (4)</p>
+<p>Cuối cùng, <code>httpMock.verify()</code> (5) giúp xác minh rằng không còn request nào được tạo ra sau khi thực thi các đoạn mã mà chưa kiểm chứng.</p>
+<h3 id=mô-phỏng-service-khi-test-component>Mô phỏng service khi test component</h3>
+<p>Khi component phụ thuộc vào một service, và service này lại phụ thuộc vào một thành phần bên ngoài như API hoặc dịch vụ bên thứ ba,&mldr; chúng ta có thể giả lập các service này bằng cách tạo đối tượng mô phỏng.</p>
+<p>Tiếp tục từ ví dụ ở mục <code>Unit test cho service sử dụng HttpClient</code> trên, chúng ta tạo component hiển thị các thông tin lấy từ GitHub API qua <code>GithubApiService</code> .</p>
+<p>Bước 1: Tạo mới một component có tên là Repo từ Angular/CLI với lệnh sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ng g c repo
+</code></pre></div><p>Cấu trúc thư mục của component Repo được tạo như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-scala data-lang=scala>src<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> app<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> repo<span style=color:#f92672>/</span>
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> <span style=color:#f92672>--</span> repo<span style=color:#f92672>.</span>component<span style=color:#f92672>.</span>css
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> <span style=color:#f92672>--</span> repo<span style=color:#f92672>.</span>component<span style=color:#f92672>.</span>html
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> <span style=color:#f92672>--</span> repo<span style=color:#f92672>.</span>component<span style=color:#f92672>.</span>spec<span style=color:#f92672>.</span>ts
+<span style=color:#f92672>--</span> <span style=color:#f92672>--</span> <span style=color:#f92672>--</span> repo<span style=color:#f92672>.</span>component<span style=color:#f92672>.</span>ts
+</code></pre></div><p>File <code>repo.component.spec.ts</code> là nơi chứa mã unit test của component Repo. Chúng ta sẽ bổ sung mã test case vào đây sau khi bổ sung mã cho template và component.</p>
+<p>Bước 2: Sửa nội dung component <code>repo.component.ts</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript>...
+
+<span style=color:#66d9ef>export</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RepoComponent</span> {
+  <span style=color:#a6e22e>user</span>: <span style=color:#66d9ef>any</span>;
+
+  <span style=color:#66d9ef>constructor</span>(<span style=color:#66d9ef>private</span> <span style=color:#a6e22e>githubApiService</span>: <span style=color:#66d9ef>GithubApiService</span>) { }
+
+  <span style=color:#a6e22e>fetchGithubUser() {</span>
+    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>githubApiService</span>.<span style=color:#a6e22e>fetchUser</span>().<span style=color:#a6e22e>subscribe</span>( <span style=color:#a6e22e>res</span> <span style=color:#f92672>=&gt;</span> {
+      <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>user</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>res</span>;
+    });
+  }
+}
+</code></pre></div><p>Sửa nội dung file template <code>repo.component.html</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>p</span> <span style=color:#960050;background-color:#1e0010>*</span><span style=color:#a6e22e>ngIf</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;user&#34;</span>&gt;{{ user.login }}&lt;/<span style=color:#f92672>p</span>&gt;
+
+&lt;<span style=color:#f92672>button</span> <span style=color:#960050;background-color:#1e0010>(</span><span style=color:#a6e22e>click</span><span style=color:#960050;background-color:#1e0010>)=&#34;</span><span style=color:#a6e22e>fetchGithubUser</span><span style=color:#960050;background-color:#1e0010>()&#34;</span>&gt;Fetch Github User&lt;/<span style=color:#f92672>button</span>&gt;
+</code></pre></div><p>Ở component này, khi người dùng click vào button <code>Fetch Github User</code> thì giá trị user thay đổi, và chuỗi trong thẻ trên template sẽ được cập nhật lại.</p>
+<p>Bước 3: Bổ sung test case</p>
+<p>Để kiểm tra template được cập nhật như mong đợi sau khi click button, file <code>repo.component.spec.ts</code> sẽ được bổ sung như sau:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript>...
+
+<span style=color:#a6e22e>fdescribe</span>(<span style=color:#e6db74>&#39;RepoComponent&#39;</span>, () <span style=color:#f92672>=&gt;</span> {
+  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>component</span>: <span style=color:#66d9ef>RepoComponent</span>;
+  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>fixture</span>: <span style=color:#66d9ef>ComponentFixture</span>&lt;<span style=color:#f92672>RepoComponent</span>&gt;;
+
+  <span style=color:#75715e>// (1)
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>mockGithubApiService</span> <span style=color:#f92672>=</span> {
+    <span style=color:#a6e22e>fetchUser</span><span style=color:#f92672>:</span> () <span style=color:#f92672>=&gt;</span> <span style=color:#66d9ef>of</span>({ <span style=color:#a6e22e>login</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;codegym-vn&#39;</span> }) <span style=color:#75715e>// (2)
+</span><span style=color:#75715e></span>  };
+
+  <span style=color:#a6e22e>beforeEach</span>(<span style=color:#66d9ef>async</span>(() <span style=color:#f92672>=&gt;</span> {
+    <span style=color:#a6e22e>TestBed</span>.<span style=color:#a6e22e>configureTestingModule</span>({
+      <span style=color:#a6e22e>declarations</span><span style=color:#f92672>:</span> [ <span style=color:#a6e22e>RepoComponent</span> ],
+      
+      <span style=color:#75715e>// (3)
+</span><span style=color:#75715e></span>      <span style=color:#a6e22e>providers</span><span style=color:#f92672>:</span> [{
+        <span style=color:#a6e22e>provide</span>: <span style=color:#66d9ef>GithubApiService</span>,
+        <span style=color:#a6e22e>useValue</span>: <span style=color:#66d9ef>mockGithubApiService</span>
+      }],
+      <span style=color:#a6e22e>imports</span><span style=color:#f92672>:</span> [<span style=color:#a6e22e>HttpClientTestingModule</span>]
+    })
+    .<span style=color:#a6e22e>compileComponents</span>();
+  }));
+	
+  ...
+  
+  <span style=color:#a6e22e>it</span>(<span style=color:#e6db74>&#39;should display GitHub repository name after click button&#39;</span>, () <span style=color:#f92672>=&gt;</span> {
+    <span style=color:#75715e>// Arrange
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>debugElement</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>fixture</span>.<span style=color:#a6e22e>debugElement</span>;
+    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>expected</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;codegym-vn&#39;</span>;
+
+    <span style=color:#75715e>// Act
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>buttonElement</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>debugElement</span>.<span style=color:#a6e22e>query</span>(<span style=color:#a6e22e>By</span>.<span style=color:#a6e22e>css</span>(<span style=color:#e6db74>&#39;button&#39;</span>));
+    <span style=color:#a6e22e>buttonElement</span>.<span style=color:#a6e22e>triggerEventHandler</span>(<span style=color:#e6db74>&#39;click&#39;</span>, <span style=color:#66d9ef>null</span>);
+    <span style=color:#a6e22e>fixture</span>.<span style=color:#a6e22e>detectChanges</span>();
+
+    <span style=color:#75715e>// Assert
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>pElement</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>debugElement</span>.<span style=color:#a6e22e>query</span>(<span style=color:#a6e22e>By</span>.<span style=color:#a6e22e>css</span>(<span style=color:#e6db74>&#39;p&#39;</span>));
+    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>actual</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>pElement</span>.<span style=color:#a6e22e>nativeElement</span>.<span style=color:#a6e22e>innerText</span>;
+    <span style=color:#a6e22e>expect</span>(<span style=color:#a6e22e>actual</span>).<span style=color:#a6e22e>toEqual</span>(<span style=color:#a6e22e>expected</span>);
+  });
+});
+</code></pre></div><p>Giải thích mã test case trên:</p>
+<ol>
+<li>Khởi tạo một đối tượng mô phỏng cho <code>GithubApiService</code> có tên là <code>mockGithubApiService</code>.</li>
+<li>Component chỉ phụ thuộc vào hàm <code>fetchUser</code> của service thật, nên chúng ta khai báo hàm <code>fetchUser</code> trả về giá trị là một đối tượng cố định.
+Hàm <code>of</code> (thuộc gói &lsquo;rxjs&rsquo;) sẽ trả về một <code>Observable</code> (giống kết quả được trả về từ <code>HttpClient</code>).</li>
+<li><strong>providers</strong> (3) là khu vực khai báo các service phụ thuộc. Chúng ta sử dụng <code>useValue</code> để tiêm vào đối tượng mô phỏng được khởi tạo ở dòng (1).</li>
+</ol>
+<h2 id=chặng-đường-tiếp-theo>Chặng đường tiếp theo</h2>
+<p>Cảm ơn bạn đã đồng hành cùng bài viết đến đây. Hy vọng những tình huống viết test ở trên sẽ phù hợp với quá trình triển khai dự án Angular trên thực tế của bạn.</p>
+<p>Tiếp theo, để tăng thêm hiểu biết về testing trong Angular/JavaScript, tác giả bài viết gợi ý một số tài nguyên dưới đây:</p>
+<ul>
+<li>Mục Testing trên trang tài liệu chính thức của Angular - <a href=https://angular.io/guide/testing>https://angular.io/guide/testing</a></li>
+<li>Trang chủ Jasmine - <a href=https://jasmine.github.io/>https://jasmine.github.io/</a></li>
+<li>Các bài hướng dẫn Unit Testing cho Angular trên CodeCraft.tv - <a href=https://codecraft.tv/courses/angular/unit-testing/overview/>https://codecraft.tv/courses/angular/unit-testing/overview/</a></li>
+<li>Khoá học có trả phí trên PluralSight hoặc LinkedIn Learning:
+<ul>
+<li><a href=https://www.pluralsight.com/courses/unit-testing-angular>https://www.pluralsight.com/courses/unit-testing-angular</a></li>
+<li><a href=https://www.linkedin.com/learning/angular-testing-and-debugging>https://www.linkedin.com/learning/angular-testing-and-debugging</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div id=disqus_thread></div>
+<script type=text/javascript>(function(){var a,b;if(location.hostname==="localhost"||location.hostname==="127.0.0.1"||location.hostname==="")return;a=document.createElement('script'),a.type='text/javascript',a.async=!0,b='hoa-d',a.src='//'+b+'.disqus.com/embed.js',(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(a)})()</script>
+<noscript>
+Please enable JavaScript to view the
+<a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a>
+</noscript>
+<a href=http://disqus.com/ class=dsq-brlink>comments powered by
+<span class=logo-disqus>Disqus</span>
+</a>
+</article>
+</div>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','G-YLG1KEYLCC','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+<script defer src=https://use.fontawesome.com/releases/v5.12.1/js/all.js integrity=sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR crossorigin=anonymous></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.js></script>
+<script type=text/javascript>tocbot&&tocbot.init({tocSelector:'.toc',contentSelector:'.post',headingSelector:'h2, h3, h4',collapseDepth:4})</script>
+</body>
+</html>
