@@ -4,6 +4,7 @@ title = "hoa.d"
 theme = "hyde-hyde"
 disqusShortname = "hoa-d"
 googleAnalytics = "G-YLG1KEYLCC"
+publishDir = "docs"
 
 [params]
     description = "a simple man who loves reading his mind \"on-the-fly\"."
