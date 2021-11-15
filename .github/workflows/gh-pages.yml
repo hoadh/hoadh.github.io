@@ -29,4 +29,5 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          external_repository: hoadh/hoadh.github.io
           publish_dir: ./public
