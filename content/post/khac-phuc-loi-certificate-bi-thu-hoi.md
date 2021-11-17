@@ -5,7 +5,7 @@ date: 2021-06-13T15:44:17+07:00
 tags: ["Caddy", "TLS", "Certificate"]
 ---
 
-Trong số những dự án mà mình thực hiện, có một vài dự án sử dụng Caddy làm load balencer. Ưu điểm của Caddy là cấu hình dễ nhớ, xử lý khá tối ưu và yêu cầu cấu hình hạ tầng không quá cao. Nhờ thế mà tiết kiệm được chi phí vận hành hệ thống.
+Trong số những dự án mà mình thực hiện, có một vài dự án sử dụng Caddy làm load balancer. Ưu điểm của Caddy là cấu hình dễ nhớ, xử lý khá tối ưu và yêu cầu cấu hình hạ tầng không quá cao. Nhờ thế mà tiết kiệm được chi phí vận hành hệ thống.
 
 ## Vấn đề
 
